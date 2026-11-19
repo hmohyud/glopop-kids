@@ -1,5 +1,5 @@
 /* ==========================================================================================
-   Glo Pop · Proposal 07 · Paper Sun
+   Glo Pop · Paper Sun
    A sunny cut-paper collage. Tokens first, then sections in page order.
    ========================================================================================== */
 
@@ -154,7 +154,7 @@ html.vt, html.no-theme-anim { transition: none; }
 /* ---------- 3. Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); scroll-padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
-@media (min-width: 1024px) { html { scroll-padding-bottom: 64px; } }   /* keyboard focus never lands under the sticky bar or the prototype chip */
+@media (min-width: 1024px) { html { scroll-padding-bottom: 0; } }   /* keyboard focus never lands under the sticky bar, which only shows below 1024px */
 body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: var(--font); font-size: var(--fs-body); font-stretch: 100%; font-weight: 400; line-height: 1.55;
@@ -1349,26 +1349,14 @@ html.js .fpanel__h { position: absolute !important; width: 1px; height: 1px; ove
 .ftr__cols a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-weight: 560; }
 .ftr__cols a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .ftr__mid { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 26px 0; }
-.ftr__all { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; font-stretch: 108%; }
 .fda { max-width: 78ch; font-size: 14px; color: rgba(255, 246, 238, .9); }
 .fda:focus { outline: none; }
 .fda:target { outline: 2px dashed var(--footer-link); outline-offset: 6px; }
 .ftr__legal { margin-top: 14px; }
 @media (min-width: 768px) { .ftr__top { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
-@media (max-width: 1023px) { .ftr { padding-bottom: calc(108px + env(safe-area-inset-bottom)); } }
-@media (min-width: 1024px) { .ftr { padding-bottom: 84px; } }   /* the prototype chip never covers the legal line */
+@media (max-width: 1023px) { .ftr { padding-bottom: calc(108px + env(safe-area-inset-bottom)); } }   /* the sticky bar never covers the legal line */
 
-/* ---------- 22. Prototype chip + sticky bar ---------- */
-.proto-chip {
-  /* bottom-right: on short desktop screens the hero copy reaches the bottom-left corner, the art doesn't */
-  position: fixed; right: 16px; bottom: 16px; z-index: 40; display: none; align-items: center; gap: 6px; padding: 8px 12px;
-  border-radius: 4px; background: var(--paper); color: var(--ink); font-size: 13px; font-stretch: 104%; text-decoration: none;
-  box-shadow: 0 0 0 1px var(--ink), 0 8px 16px -10px rgba(74, 13, 46, .45); transform: rotate(1deg);
-}
-.proto-chip b { font-weight: 760; }
-.proto-chip .i { width: 15px; height: 15px; }
-.proto-chip:hover { background: var(--paper-white); }
-@media (min-width: 1024px) { .proto-chip { display: inline-flex; } }
+/* ---------- 22. Sticky bar ---------- */
 .bar {
   position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 45;
   display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 7px 7px 16px; border-radius: 999px;
@@ -1443,13 +1431,12 @@ html.js [data-lift] { pointer-events: auto; cursor: pointer; -webkit-tap-highlig
 .hdr::after { background: var(--paper); background-image: var(--grain, none); }
 .hdr.is-scrolled::before, .hdr.is-scrolled::after { opacity: 1; }
 
-/* washi tape: the prototype chip, the honest bit and the real-one exhibit are taped onto the page */
-.proto-chip::before, .ledger::before, .real::before {
+/* washi tape: the honest bit and the real-one exhibit are taped onto the page */
+.ledger::before, .real::before {
   content: ""; position: absolute; z-index: 2; width: 46px; height: 17px; pointer-events: none;
   background: repeating-linear-gradient(-55deg, rgba(255, 255, 255, .38) 0 3px, #0000 3px 10px), var(--tape);
   clip-path: polygon(0 0, 100% 0, 96% 25%, 100% 50%, 96% 75%, 100% 100%, 0 100%, 4% 75%, 0 50%, 4% 25%);
 }
-.proto-chip::before { right: 18px; top: -9px; width: 40px; height: 15px; transform: rotate(5deg); }
 .ledger, .real { position: relative; }
 .ledger::before { left: 50%; top: -11px; width: 104px; height: 24px; transform: translateX(-50%) rotate(-2deg); }
 .real::before { left: -12px; top: 6px; width: 64px; height: 20px; transform: rotate(-32deg); }

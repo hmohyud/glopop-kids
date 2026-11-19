@@ -1,4 +1,4 @@
-/* Glo Pop · Proposal 07 · Paper Sun
+/* Glo Pop · Paper Sun
  * One classic script (works from file:// and over http). Modules, in order:
  * Data, Theme, Motion (the paper theatre, stop-motion cast and confetti), Reveal, Nav, Explorer, Map,
  * Taste test, Sticks, Moments, Planner, Formats, Lineup, Shop, Waitlist, FAQ, Sources, Zoom, Grain, Real3D.
