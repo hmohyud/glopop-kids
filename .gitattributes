@@ -1,0 +1,4 @@
+* text=auto
+
+# Radiance HDRIs start with a text header; never let git touch their line endings.
+*.hdr binary
