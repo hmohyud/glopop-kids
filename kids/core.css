@@ -1,0 +1,133 @@
+/* ---- kids/core.css ---- */
+/* Fold-Along Bay: the shared paper system (build plan 3.13, spec 4.1 to 4.7). Tokens, facet fills, crease
+   notation, the paper ball, two shared utilities and the Pause rules. Nothing about layout. Linked after
+   style.css, unlayered. Only this sheet defines what is in it; every other kids sheet builds on it. */
+
+/* ---------- 1. Tokens (spec 4.1; nothing existing is renamed) ---------- */
+@property --ear { syntax: '<length>'; inherits: true; initial-value: 0px; }
+
+:root {
+  /* two-sided paper: stock and reverse are always a pair */
+  --ori: var(--accent);               /* face of the child's sheet (berry stock) */
+  --ori-back: var(--paper-white);     /* its reverse */
+  --rev-sheet: var(--paper-white);    /* reverse of any section sheet (hems) */
+  --rev-card: var(--accent-soft);     /* reverse of a white card, kid layer */
+  --rev-strip: var(--paper-white);    /* reverse of an accent headline strip or primary button */
+  --rev-kraft: var(--paper);          /* reverse of kraft */
+
+  /* crease ink (berry, never black) */
+  --crease-d: rgba(74, 13, 46, .16);  /* the dark hairline of a crease that stayed */
+  --crease-l: rgba(255, 255, 255, .6);/* the lit hairline beside it */
+  --crease-ink: rgba(74, 13, 46, .55);/* notation lines on models and maps */
+  --fold-shade: rgba(74, 13, 46, .10);/* shade band on a panel that is still opening */
+  --contact: rgba(74, 13, 46, .18);   /* contact shadow under a lifted flap */
+
+  /* facet ramp for the default (berry) stock: light from the upper left */
+  --o1: var(--accent-soft); --o2: var(--accent-soft); --o3: var(--accent);
+  --o4: var(--accent-ink);  --o5: var(--accent-ink);
+  --ob1: #FFFFFF; --ob2: #EDE7EA; --oink: #4A0D2E;
+
+  /* geometry */
+  --hem-h: 28px;                      /* kid sheet hem; 600px: 34px; 1024px: 40px */
+  --hem-card: 9px;                    /* card hem */
+  --ear-rest: 40px; --ear-peek: 64px; /* page corner */
+  --mat-size: 160px;                  /* fold stage; 600px: 220px; 1024px: 200px (`--mat` is taken: style.css:721) */
+
+  /* stop-motion. One rule for every reveal somebody pressed or scrolled to: the first pose is on screen in the
+     frame of the trigger (jump-start, never a dead first step), at most two in-between poses held about 60 ms
+     each, and the thing lies flat within 180 ms. Slower than that reads as a slow render, not as stop motion. */
+  --dur-swap: 120ms;   --step-swap: steps(2, start);   /* a two-frame cut: half way at once, done at 60 ms */
+  --dur-fold: 180ms;   --step-fold: steps(3, start);   /* a stepped CSS fold: a third at once, two thirds at 60 ms, done at 120 ms */
+  --dur-unroll: 180ms;                                 /* three held clips of 60 ms each, written as keyframes */
+
+  /* textures and strips */
+  --wrinkle: 0;                       /* 0 to .8, per element, only ever raised by a scrunch */
+  --mache-1: var(--kraft); --mache-2: var(--paper); --mache-3: var(--tint);
+  --glue: rgba(74, 13, 46, .14);
+
+  /* crease layers for HTML boxes: background-image values, composed with your own size and position.
+     A crease that stayed is a hairline pair. Never under text: 12 px ticks in the padding (spec 4.4). */
+  --crease-pair-h: linear-gradient(to bottom, var(--crease-d) 0 1px, var(--crease-l) 1px 2px, #0000 2px);
+  --crease-pair-v: linear-gradient(to right, var(--crease-d) 0 1px, var(--crease-l) 1px 2px, #0000 2px);
+}
+@media (min-width: 600px)  { :root { --hem-h: 34px; --mat-size: 220px; } }
+@media (min-width: 1024px) { :root { --hem-h: 40px; --mat-size: 200px; } }
+.zone { --hem-h: 18px; --rev-card: var(--kraft); }
+
+/* the berry ramp follows the product theme; sun, sea and sugar are fixed. No tone depends on color-mix():
+   without it the berry ramp falls back to the three theme tokens above. */
+@supports (color: color-mix(in oklab, red, blue)) {
+  :root, [data-paper="berry"] {
+    --o1: color-mix(in oklab, var(--accent), #fff 34%); --o2: color-mix(in oklab, var(--accent), #fff 14%);
+    --o4: color-mix(in oklab, var(--accent), #4A0D2E 16%); --o5: color-mix(in oklab, var(--accent), #4A0D2E 32%);
+  }
+}
+[data-paper="berry"] { --ori: var(--accent); }
+[data-paper="sun"]   { --ori: var(--sun);  --o1: #FFDB7F; --o2: #FFD058; --o3: #FFC83D; --o4: #E2AA3B; --o5: #C58C38; }
+[data-paper="sea"]   { --ori: var(--sea);  --o1: #60BEC9; --o2: #30AAB8; --o3: #0E9CAD; --o4: #188599; --o5: #216E84; }
+[data-paper="sugar"] { --ori: var(--paper-white); --o1: #FFFFFF; --o2: #FBF7F8; --o3: #F5EDF0; --o4: #EADFE3; --o5: #DCCDD4;
+                       --ob1: var(--accent-soft); --ob2: var(--accent); }   /* white outside, pink inside */
+
+/* ---------- 2. Facet fills: single classes, so they work inline and inside sprite symbols ---------- */
+/* One light, upper left. o1 to o5: the stock, light to dark. ob1, ob2: its reverse. oink: ink marks.
+   osh: the drawn shadow under a model. ocs: the contact shadow under a lifted flap. */
+.o1 { fill: var(--o1); stroke: var(--o1); } .o2 { fill: var(--o2); stroke: var(--o2); } .o3 { fill: var(--o3); stroke: var(--o3); }
+.o4 { fill: var(--o4); stroke: var(--o4); } .o5 { fill: var(--o5); stroke: var(--o5); }
+.ob1 { fill: var(--ob1); stroke: var(--ob1); } .ob2 { fill: var(--ob2); stroke: var(--ob2); }
+.oink { fill: var(--oink); } .osh { fill: #4A0D2E; fill-opacity: .2; }
+.ocs { fill: var(--contact); }
+/* the stroke closes hairline seams; paint darker facets first. Fold art only (svg.ori, and g.ori inside a sprite
+   symbol): <html> carries .ori too, so a bare `.ori polygon` hit every polygon in the document. :where() keeps the
+   weight of the old selector, so every sheet that overrides it still does. */
+:where(svg, g).ori polygon { stroke-width: .6; stroke-linejoin: round; }
+
+/* ---------- 3. Crease notation for inline SVG (models, maps, the print sheet) ---------- */
+/* cv: a valley fold. cm: a mountain fold (dash, dot, dot). Both are the fold ABOUT to be made.
+   ck: a crease that stayed; the engine draws its lit twin (--crease-l) offset by 0.4. */
+.cv, .cm { fill: none; stroke: var(--crease-ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cv { stroke-dasharray: 4 3; }
+.cm { stroke-dasharray: 8 3 1.5 3 1.5 3; }
+.ck { fill: none; stroke: var(--crease-d); stroke-width: 1; vector-effect: non-scaling-stroke; }
+
+/* ---------- 4. The paper ball (Ori.paperBall): one outline and eleven facets, tinted from --ori ---------- */
+.pb { fill: var(--ori); stroke: var(--ori); stroke-width: 1; stroke-linejoin: round; }
+.pb-l1 { fill: #fff; fill-opacity: .38; } .pb-l2 { fill: #fff; fill-opacity: .22; } .pb-l3 { fill: #fff; fill-opacity: .1; }
+.pb-d1 { fill: #4A0D2E; fill-opacity: .07; } .pb-d2 { fill: #4A0D2E; fill-opacity: .15; } .pb-d3 { fill: #4A0D2E; fill-opacity: .24; }
+
+/* ---------- 5. Utilities shared by more than one package ---------- */
+/* .wrinkle: the baked crumple tile over a positioned parent. It shows only where a scrunch raised --wrinkle.
+   Loose crumple is the 256px default; things mid-scrunch set background-size: 128px themselves. */
+.wrinkle { position: absolute; inset: 0; background-image: var(--crumple, none); background-size: 256px; opacity: var(--wrinkle, 0); pointer-events: none; }
+
+/* .mache: three torn strips of paper pasted in a row, each overlapping the next (spec 4.6).
+   Markup: div.mache > i*3 > b. The <i> casts the glue shadow, the <b> is the torn shape (a cut shape cannot
+   cast its own shadow). Whoever places it sets its width, position and, if needed, its height. */
+.mache { position: relative; display: block; height: 22px; pointer-events: none; }
+.mache > i { position: absolute; top: 0; bottom: 0; display: block; filter: drop-shadow(0 1px 0 var(--glue)); }
+.mache > i > b { display: block; width: 100%; height: 100%; }
+.mache > i:nth-child(1) { left: -1%; width: 41%; rotate: -.6deg; }
+.mache > i:nth-child(2) { left: 31%; width: 40%; top: 2px; bottom: -2px; rotate: .5deg; }
+.mache > i:nth-child(3) { left: 63%; width: 38%; top: -1px; bottom: 1px; rotate: -.3deg; }
+/* each end is torn by hand: nine uneven points down it; the long edges wander a little */
+.mache > i:nth-child(1) > b { background-color: var(--mache-1); clip-path: polygon(1.5% 0%, 26% 6%, 58% 0%, 99% 5%, 97.8% 18%, 100% 33%, 98.4% 49%, 99.6% 66%, 97.9% 82%, 99.2% 100%, 63% 94%, 31% 100%, .9% 96%, 2.1% 80%, .2% 64%, 1.7% 47%, 0% 30%, 1.9% 14%); }
+.mache > i:nth-child(2) > b { background-color: var(--mache-2); clip-path: polygon(.8% 4%, 33% 0%, 68% 7%, 98.6% 0%, 100% 17%, 98.1% 34%, 99.5% 52%, 97.8% 69%, 99.8% 85%, 98.5% 100%, 71% 93%, 38% 100%, 1.6% 96%, 0% 81%, 1.9% 63%, .4% 46%, 2.2% 29%, .6% 15%); }
+.mache > i:nth-child(3) > b { background-color: var(--mache-3); clip-path: polygon(1.1% 5%, 29% 0%, 61% 6%, 99.1% 0%, 98% 16%, 100% 31%, 98.3% 48%, 99.7% 65%, 98.2% 83%, 99.5% 100%, 66% 95%, 35% 100%, .5% 94%, 2% 79%, 0% 62%, 1.8% 45%, .3% 28%, 2.1% 13%); }
+
+/* ---------- 6. The Pause rules (spec 4.7, build plan 3.13), verbatim ---------- */
+/* An existing one-shot that starts while Pause is on would freeze on its first frame (style.css:1556 pauses, it
+   does not skip): reveal blocks invisible, the fact slip clipped away. These rules work without kids/core.js. */
+html[data-motion="off"] .rv.in, html[data-motion="off"] .fact-slip.unroll, html[data-motion="off"] .sunpop__in.flip-in,
+html[data-motion="off"] .moment__art.swap svg, html[data-motion="off"] .cal__bags svg,
+html[data-motion="off"] .stack__bag.drop { animation: none !important; }
+html.ori .rv.is-held { animation: none !important; }      /* a revealed block the core has held (3.2): it never replays */
+html[data-motion="off"] [data-lift] { pointer-events: none; cursor: default; }
+@media (prefers-reduced-motion: reduce) { html.js [data-lift] { pointer-events: none; cursor: default; } }
+.crab::after, .ball::after { content: ""; position: absolute; inset: -12px; }   /* 48 px tap targets (spec 4.7); both hosts are already position: absolute and both pseudo-elements are free */
+
+/* ---------- 7. app.js never finished (Rule S, third case) ---------- */
+/* Added by the stage-1 gatekeeper; not in the list of build plan 3.13. style.css's failsafe (html.rv-all, set by the
+   head script after 3 s) opens the reveal blocks, but two other start states wait for a class only app.js adds: the
+   hero's sun never rises (so "yes, that's the sun." points at an empty sky) and the pop diagram's leader lines stay
+   undrawn. style.css already lifts both under reduced motion (1561-1562); the same two rules, for a dead app.js. */
+html.rv-all .hero:not(.risen) .sunpop, html.rv-all .hero:not(.risen) .sun-stick { opacity: 1; transform: none; }
+html.rv-all .diagram .dg-ln { stroke-dashoffset: 0; }

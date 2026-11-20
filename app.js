@@ -28,12 +28,13 @@
   /* ================================ Data ================================ */
   var PRODUCTS = [
     {
-      // From the pack (Nov 2026): Collagen Boost, a strawberry Beauty Lollipop by Glo Pop. Sugar free; net wt. 15 g a pop;
-      // seven actives in the pack's words: peptides, vitamins C, B6, B12 and B8 (biotin), hyaluronic acid and zinc.
-      id: 'strawberry-pop', kind: 'lollipop', name: 'Collagen Boost', full: 'Strawberry Beauty Lollipop', flavor: 'Strawberry',
+      // The pop (pack facts, Nov 2026): a strawberry lollipop by Glo Pop Kids. Sugar free; net wt. 15 g a pop;
+      // seven ingredients named on the pack: peptides, vitamins C, B6, B12 and B8 (biotin), hyaluronic acid and zinc.
+      // The printed pack still carries the older product name and lockup, so the page shows no pack photo: kids pack art is TBD.
+      id: 'strawberry-pop', kind: 'lollipop', name: 'Strawberry Pop', full: 'Sugar-free strawberry lollipop', flavor: 'Strawberry',
       status: 'available', statusLabel: 'Available now', tabNote: 'available',
       candy: { kind: 'lollipop', color: '#FF1493' },
-      card: 'Strawberry Beauty Lollipop with peptides, hyaluronic acid and five more actives. Sugar free, 15&nbsp;g a pop, 10 per bag.',
+      card: 'A sugar-free strawberry lollipop with vitamins and zinc. Seven ingredients named on the pack, 15&nbsp;g a pop, 10 per bag.',
       link: { href: '#shop', label: 'Shop' },
       copy: {}                                   // strawberry copy ships in the HTML (captured at start-up)
     },
@@ -52,10 +53,10 @@
         'hero.eyebrow': 'Super Greens Gummies · Coming soon',
         'hero.h1': 'Something <span class="cut in"><span class="strip">green</span></span> is coming.',
         'hero.lead': 'Strawberry-watermelon gummies with kale, broccoli, spinach, wild blueberries and elderberry: 20 calories in a serving of 2. Price and launch date: ' + TBD + '. Want to hear first?',
-        'hero.cta': 'Join the waitlist', 'hero.href': '#waitlist', 'hero.note': 'concept illustration', 'hero.inside': '#gummy-facts',
+        'hero.cta': 'Join the waitlist', 'hero.href': '#waitlist', 'hero.inside': '#gummy-facts',
         'hero.proof': proof([['candy', 'Strawberry-watermelon'], ['leaf', 'Vegan friendly, gluten free, non GMO'], ['clipboard-list', '20 calories per 2 gummies'], ['package', '60 gummies a container']]),
         'pop.eyebrow': 'The gummies', 'pop.h2': 'Super Greens Gummies, annotated.',
-        'pop.lead': 'Strawberry-watermelon gummies with kale, broccoli, spinach, wild blueberries and elderberry. Coming soon; the price and launch date are still ' + TBD + '.',
+        'pop.lead': 'Strawberry-watermelon gummies with kale, broccoli, spinach, wild blueberries and elderberry. Coming soon; the price, launch date and age guidance are still ' + TBD + '.',
         'pop.amounts': 'Every amount is on the label. <a class="tlink" href="#gummy-facts">See the Supplement Facts' + icon('arrow-right') + '</a>',
         'pop.title': 'A concept illustration of three green gummies and a container, annotated: strawberry-watermelon flavor, five B vitamins, 20 calories in a 2-gummy serving, kale, broccoli and spinach in the blend, two gummies daily, 60 gummies per container. Price and launch date are still to be decided.',
         'pop.n1': hand('strawberry-watermelon', 'The flavor. Final gummy shape: ' + TBD + '.'),
@@ -71,8 +72,8 @@
         'final.line': 'Super Greens Gummies · Strawberry-watermelon · 2 gummies a serving · 30 servings a container · Price and launch ' + TBD,
         'bar.text': '<b>Super Greens Gummies</b><span>Strawberry-watermelon · coming soon</span>', 'bar.cta': 'Join the waitlist', 'bar.href': '#waitlist',
         notice: {
-          inside: 'Heads up: these seven actives are in Collagen Boost, the lollipop. Super Greens Gummies have their own formula: five B vitamins, iron, iodine, sodium and potassium, plus a greens blend. <a class="tlink tlink--in" href="#gummy-facts">See their Supplement Facts</a>.',
-          sugar: 'Heads up: this chapter is about Collagen Boost, the lollipop. Super Greens Gummies aren\'t sugar free: their label lists 3&nbsp;g of added sugars in a 2-gummy serving.'
+          inside: 'Heads up: these seven ingredients are in Strawberry Pop, the lollipop. Super Greens Gummies have their own formula: five B vitamins, iron, iodine, sodium and potassium, plus a greens blend. <a class="tlink tlink--in" href="#gummy-facts">See their Supplement Facts</a>.',
+          sugar: 'Heads up: this chapter is about Strawberry Pop, the lollipop. Super Greens Gummies aren\'t sugar free: their label lists 3&nbsp;g of added sugars in a 2-gummy serving.'
         },
         live: 'Now showing Super Greens Gummies: strawberry-watermelon, coming soon.'
       }
@@ -87,7 +88,7 @@
         'hero.eyebrow': 'Next color · In development',
         'hero.h1': 'Not <span class="cut in"><span class="strip">cut out</span></span> yet.',
         'hero.lead': 'More lollipop colors are in development. Names, flavors and dates: ' + TBD + '. We\'ll only name one when it\'s real.',
-        'hero.cta': 'Get notified', 'hero.href': '#waitlist', 'hero.note': 'not cut out yet', 'hero.proof': null,
+        'hero.cta': 'Get notified', 'hero.href': '#waitlist', 'hero.proof': null,
         'pop.eyebrow': 'The next color', 'pop.h2': 'The next color, annotated so far.',
         'pop.lead': 'Still a pencil outline. When the next color is real, it gets cut out and annotated properly.',
         'pop.amounts': 'Details: ' + TBD + '. <a class="tlink" href="#waitlist" data-notify>Get notified' + icon('arrow-right') + '</a>',
@@ -103,14 +104,14 @@
         'wl.text': 'Name ' + TBD + ', flavor ' + TBD + ', date ' + TBD + '. Get notified and you\'ll hear the moment it\'s real.',
         'wl.cap': 'colors ' + TBD,
         notice: {
-          inside: 'Heads up: these seven actives are in Collagen Boost. The next color\'s formula is ' + TBD + '.',
-          sugar: 'Heads up: this chapter is about Collagen Boost. The next color\'s recipe is ' + TBD + '.'
+          inside: 'Heads up: these seven ingredients are in Strawberry Pop. The next color\'s formula is ' + TBD + '.',
+          sugar: 'Heads up: this chapter is about Strawberry Pop. The next color\'s recipe is ' + TBD + '.'
         },
         live: 'Now showing the next color: still in development.'
       }
     }
   ];
-  PRODUCTS[0].copy.live = 'Now showing Collagen Boost: available now.';
+  PRODUCTS[0].copy.live = 'Now showing Strawberry Pop: available now.';
   function proof(items) {
     return items.map(function (it) { return '<li>' + icon(it[0]) + it[1] + '</li>'; }).join('');
   }
@@ -119,22 +120,20 @@
 
   var ACTIVE_NAMES = { peptides: 'Peptides', vitc: 'Vitamin C', b6: 'Vitamin B6', b12: 'Vitamin B12', biotin: 'Biotin (B8)', ha: 'Hyaluronic acid', zinc: 'Zinc' };
   var FUNCTIONS = [
-    { id: 'collagen', name: 'Collagen formation', a: ['vitc'], line: 'Vitamin C contributes to normal collagen formation for the normal function of skin.' },
-    { id: 'skin', name: 'Normal skin and hair', a: ['zinc', 'biotin'], line: 'Zinc contributes to the maintenance of normal skin, hair and nails, and biotin to normal skin and hair.' },
-    { id: 'oxid', name: 'Antioxidant (cell protection)', a: ['vitc', 'zinc'], line: 'Vitamin C and zinc contribute to the protection of cells from oxidative stress.' },
-    { id: 'immune', name: 'Immune function', a: ['vitc', 'b6', 'b12', 'zinc'], line: 'Vitamin C, vitamin B6, vitamin B12 and zinc contribute to normal immune function.' },
+    { id: 'immune', name: 'Immune system', a: ['vitc', 'b6', 'b12', 'zinc'], line: 'Vitamin C, vitamin B6, vitamin B12 and zinc contribute to the normal function of the immune system.' },
     { id: 'energy', name: 'Energy-yielding metabolism', a: ['vitc', 'b6', 'b12', 'biotin'], line: 'Vitamin C, vitamin B6, vitamin B12 and biotin contribute to normal energy-yielding metabolism.' },
-    { id: 'tired', name: 'Less tiredness and fatigue', a: ['vitc', 'b6', 'b12'], line: 'Vitamin C, vitamin B6 and vitamin B12 contribute to the reduction of tiredness and fatigue.' },
+    { id: 'tired', name: 'Reduction of tiredness and fatigue', a: ['vitc', 'b6', 'b12'], line: 'Vitamin C, vitamin B6 and vitamin B12 contribute to the reduction of tiredness and fatigue.' },
     { id: 'rbc', name: 'Red blood cell formation', a: ['b6', 'b12'], line: 'Vitamin B6 and vitamin B12 contribute to normal red blood cell formation.' },
+    { id: 'nerve', name: 'Nervous system', a: ['b12'], line: 'Vitamin B12 contributes to the normal functioning of the nervous system.' },
+    { id: 'oxid', name: 'Cell protection', a: ['vitc', 'zinc'], line: 'Vitamin C and zinc contribute to the protection of cells from oxidative stress.' },
     { id: 'protein', name: 'Protein metabolism', a: ['b6', 'zinc'], line: 'Vitamin B6 contributes to normal protein and glycogen metabolism, and zinc to normal protein synthesis.' },
-    { id: 'moist', name: 'Studied for skin moisture', a: ['peptides', 'ha'], dashed: true, line: 'Peptides and hyaluronic acid have been studied for skin moisture. The research is promising and still debated, and there\'s no authorized wording.' }
+    { id: 'moist', name: 'No authorized wording', a: ['peptides', 'ha'], dashed: true, line: 'Peptides and hyaluronic acid have no authorized wording. The research is still debated, and why they are in a kids pop is TBD.' }
   ];
   var MOMENTS = {
-    coffee: 'One pop while the coffee brews.',
-    desk: 'A small, sweet pause between emails.',
-    beach: 'Packed next to the SPF. Shade for both.',
-    skincare: 'Skincare, then a pop. Two steps, done.',
-    walk: 'One for the walk home.'
+    coffee: 'One pop after breakfast.',
+    desk: 'A small, sweet pause between homework pages.',
+    beach: 'Packed next to the sunscreen. Shade for both.',
+    walk: 'One pop as the sun goes down. Then brush as usual.'
   };
   var WEEKS = { 2: [14, 2, 6], 3: [21, 3, 9], 4: [28, 3, 2] };
   // confetti colours per product, for the burst when you choose one (the CSS tokens are mid-transition then)
@@ -204,7 +203,7 @@
 
   function setProduct(id, origin, opts) {
     if (!byId[id] || id === current) return;
-    var instant = reduced() || (opts && opts.instant);
+    var instant = reduced() || motionOff() || (opts && opts.instant);
     var ob = origin && !instant && origin.getBoundingClientRect();
     if (ob && ob.width) {                            // a little confetti in the new colours, from the control
       setTimeout(function () { FX.burst(ob.left + ob.width / 2, ob.top + ob.height / 2, { pal: BURSTS[id] }); }, 260);
@@ -266,22 +265,9 @@
     });
   });
 
-  // the hero art turns over like a sheet of paper
   (function heroFlip() {
-    var art = $('.hero__art'), inner = $('.sunpop__in'), t = 0;
-    listeners.push(function (p) {
-      if (!art || art.getAttribute('data-art') === p.id) return;
-      if (reduced() || !inner) { art.setAttribute('data-art', p.id); return; }
-      clearTimeout(t);
-      inner.classList.remove('flip-in');
-      inner.classList.add('flip-out');
-      t = setTimeout(function () {
-        art.setAttribute('data-art', p.id);
-        inner.classList.remove('flip-out');
-        void inner.offsetWidth;
-        inner.classList.add('flip-in');
-      }, 200);
-    });
+    // The hero art no longer swaps: the hero is the fold-along bay, the same paper sun for every product
+    // (.hero__art[data-art] stays as the HTML has it, and nothing flips).
   })();
 
   /* ================================ Motion ================================ */
@@ -293,6 +279,7 @@
     DECOR.forEach(function (c) { if (off || reduced()) c.pause(); else c.resume(); });
     if (!off && STAGE) STAGE.kick();
     if (save) store('papersun-motion', off ? 'off' : 'on');
+    if (typeof CustomEvent === 'function') doc.dispatchEvent(new CustomEvent('papersun:motion', { detail: { off: !!off } }));
   }
   setMotion(motionOff(), false);
   motionBtns.forEach(function (b) { on(b, 'click', function () { setMotion(!motionOff(), true); }); });
@@ -344,7 +331,7 @@
       wind = 0.6 + 0.22 * Math.sin(T * 0.23 + 1) + 0.12 * Math.sin(T * 0.61 + 2) + 0.06 * Math.sin(T * 1.7) + gust;
       var any = false;
       for (var i = 0; i < parts.length; i++) { var p = parts[i]; if (p.live) { any = true; p.tick(dt, T); } }
-      if (any) raf = requestAnimationFrame(frame); else last = 0;
+      if (any) { if (!raf) raf = requestAnimationFrame(frame); } else last = 0;   // a part that kicked from its own tick has booked the frame already
     }
     function kick() {
       if (raf || !running()) return;
@@ -359,7 +346,7 @@
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (es) {
           var was = p.live;
-          p.live = es[0].isIntersecting;
+          p.live = es[es.length - 1].isIntersecting;
           if (p.live && p.measure) p.measure();
           if (p.live && !was && p.enter) p.enter();
           kick();
@@ -463,8 +450,10 @@
       if (sunEl) sunK = sunEl.offsetWidth;
       if (boat) {
         boat.__w = boat.offsetWidth; boat.__h = boat.offsetHeight;
-        sea.docTop = sr.top + window.pageYOffset; sea.maxY = doc.documentElement.scrollHeight - vh();
+        // the boat's crossing ends when its own scene has scrolled away (the sunset is mid-page now), or at the end of the page
+        sea.docTop = sr.top + window.pageYOffset; sea.maxY = Math.min(doc.documentElement.scrollHeight - vh(), sea.docTop + sea.H);
       }
+      if (!STAGE.running()) restBoat();
     }
     function tick(dt, t) {
       // up and down is the main stroke (a floor on phones, so it never turns timid); a little sideways
@@ -520,7 +509,7 @@
     // placed by hand 12 times a second (held between), like the rest of the stop-motion cast
     var boatStep = stepper(12);
     function tickBoat(dt) {
-      var y0 = sea.docTop - vh(), maxY = sea.maxY;
+      var y0 = Math.max(0, sea.docTop - vh()), maxY = sea.maxY;
       var p = maxY > y0 ? clamp((STAGE.y() - y0) / (maxY - y0), 0, 1) : 1;
       var target = sea.W * (0.14 + 0.56 * p);
       if (bx === null) bx = target;
@@ -535,6 +524,14 @@
       ba += (ta - ba) * k;
       if (pen(dt) && boatUse) draw(boatUse, Math.random() < 0.5 ? 'sh-boat' : 'sh-boat2');
       if (boatStep(dt)) boat.style.transform = 'translate(' + px(bx - boat.__w / 2 + boil(0.5)) + ',' + px(by - boat.__h * 0.84 + boil(0.4)) + ') rotate(' + (ba + boil(0.8)).toFixed(2) + 'deg) scaleX(' + face + ')';
+    }
+    // the still pose (Pause motion): on the back strip, at the scroll position, no easing
+    function restBoat() {
+      if (!boat || !strips[1] || !boat.__w) return;
+      var y0 = Math.max(0, sea.docTop - vh());
+      var p = sea.maxY > y0 ? clamp((window.pageYOffset - y0) / (sea.maxY - y0), 0, 1) : 1, half = boat.__w * 0.4;
+      bx = sea.W * (0.14 + 0.56 * p); by = (sea.y(1, bx - half) + sea.y(1, bx + half)) / 2; ba = 0;
+      boat.style.transform = 'translate(' + px(bx - boat.__w / 2) + ',' + px(by - boat.__h * 0.84) + ')';
     }
     scene.classList.add('sea-live');
     STAGE.add({ el: scene, measure: measure, tick: tick });
@@ -952,10 +949,8 @@
     })();
     // seams: offcuts that fit the sheet they fall from
     var TEAR = '0 0 16 20', CHIP = '0 0 16 16';
-    [['#pop', [['sh-tear', TEAR, 'var(--accent)', 'var(--deep)'], ['sh-chip', CHIP, 'var(--deep)', 'var(--accent)'], ['sh-tear', TEAR, 'var(--accent-soft)', 'var(--accent)']]],
-      ['#sugar', [['sh-chip', CHIP, '#fff', 'var(--tint)'], ['sh-tear', TEAR, '#fff', 'var(--tint)'], ['sh-chip', CHIP, 'var(--tint)', '#fff']]],
-      ['#sticks', [['sh-tear', TEAR, 'var(--accent)', 'var(--deep)'], ['sh-chip', CHIP, '#fff', 'var(--tint)'], ['sh-tear', TEAR, 'var(--deep)', 'var(--accent)']]],
-      ['#formats', [['sh-chip', CHIP, 'var(--accent)', 'var(--deep)'], ['sh-tear', TEAR, '#FFB21E', '#FFC83D'], ['sh-chip', CHIP, 'var(--accent-soft)', 'var(--accent)']]]
+    [['#sugar', [['sh-chip', CHIP, '#fff', 'var(--tint)'], ['sh-tear', TEAR, '#fff', 'var(--tint)'], ['sh-chip', CHIP, 'var(--tint)', '#fff']]],
+      ['#sticks', [['sh-tear', TEAR, 'var(--accent)', 'var(--deep)'], ['sh-chip', CHIP, '#fff', 'var(--tint)'], ['sh-tear', TEAR, 'var(--deep)', 'var(--accent)']]]
     ].forEach(function (s) { var el = $(s[0]); if (el) seam(el, s[1]); });
   }
 
@@ -1195,7 +1190,7 @@
     sentinel.setAttribute('aria-hidden', 'true');
     doc.body.prepend(sentinel);
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { hdr.classList.toggle('is-scrolled', !es[0].isIntersecting); }).observe(sentinel);
+      new IntersectionObserver(function (es) { hdr.classList.toggle('is-scrolled', !es[es.length - 1].isIntersecting); }).observe(sentinel);
       var links = $$('.nav a');
       var map = {};
       links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
@@ -1252,7 +1247,7 @@
       };
       var watch = function (el, key) {
         if (!el) return;
-        new IntersectionObserver(function (es) { state[key] = es[0].isIntersecting; upd(); }).observe(el);
+        new IntersectionObserver(function (es) { state[key] = es[es.length - 1].isIntersecting; upd(); }).observe(el);
       };
       watch($('.hero__inner'), 'hero'); watch($('#shop'), 'shop'); watch($('#footer'), 'foot');
     }
@@ -1295,8 +1290,7 @@
     var t = doc.getElementById(id);
     if (t) layoutAll();
     reveal(t);
-    if (id === 'waitlist') {
-      if (current === 'next-pop' || a.hasAttribute('data-notify')) { var cb = $('[data-wl-colors]'); if (cb) cb.checked = true; }
+    if (id === 'waitlist') {                       // (the "new colors" box is never ticked by script: it is the visitor's to tick)
       afterScroll(function () { var f = $('#wl-email'); if (f) f.focus({ preventScroll: true }); });
     }
   });
@@ -1399,12 +1393,12 @@
         var is = !!sel && (sel.type === 'f' ? p.getAttribute('data-f') === sel.id : p.getAttribute('data-a') === sel.id);
         p.classList.toggle('is-on', is);
       });
-      if (!sel) { live.textContent = 'Tap a job on the right, or an active on the left, to see how they connect.'; return; }
+      if (!sel) { live.textContent = 'Tap a job on the right, or an ingredient on the left, to see how they connect.'; return; }
       if (sel.type === 'f') { live.textContent = FUNCTIONS.filter(function (f) { return f.id === sel.id; })[0].line; return; }
       var fs = FUNCTIONS.filter(function (f) { return link(f, sel.id); });
       var names = fs.map(function (f) { return f.name.charAt(0).toLowerCase() + f.name.slice(1); });
       var list = names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] : names[0];
-      live.textContent = ACTIVE_NAMES[sel.id] + ': ' + list + '.' + (fs.some(function (f) { return f.dashed; }) ? ' The line is dashed: the research is promising, still debated, and there\'s no authorized wording.' : ' Each one is an EU-authorized wording for the nutrient.');
+      live.textContent = ACTIVE_NAMES[sel.id] + ': ' + list + '.' + (fs.some(function (f) { return f.dashed; }) ? ' The line is dashed: the research is still debated, and why it is in a kids pop is TBD.' : ' Each one is an EU-authorized wording for the nutrient.');
     }
     on(box, 'click', function (e) {
       var b = e.target.closest('.map-a, .map-f');
@@ -1469,6 +1463,20 @@
       sucralose: [600, 600, 'art', 'Sucralose', 'artificial', 'Gram for gram, about 600× as sweet as sugar: a cube’s weight tastes like about 600 sugar cubes.', 0, '≈ 600 sugar cubes', 'about 600×'],
       neotame: [7000, 13000, 'art', 'Neotame', 'artificial', 'Gram for gram, about 7,000–13,000× as sweet as sugar: a cube’s weight tastes like 7,000 to 13,000 sugar cubes.', 0, '7,000–13,000 sugar cubes', '7,000–13,000×'],
       advantame: [20000, 20000, 'art', 'Advantame', 'artificial', 'Gram for gram, about 20,000× as sweet as sugar: a cube’s weight tastes like about 20,000 sugar cubes.', 0, '≈ 20,000 sugar cubes', 'about 20,000×']
+    };
+    // the kid line shown above each caption: a plain-words paraphrase of the caption under it, no new number
+    var KID = {
+      sugar: 'Plain sugar is the ruler. One cube tastes like one cube.',
+      allulose: 'A bit less sweet than sugar. About 0.7 of a cube.',
+      erythritol: 'A bit less sweet than sugar. About 0.6 to 0.8 of a cube.',
+      xylitol: 'About as sweet as sugar. One cube for one cube.',
+      stevia: 'One cube tastes like 200 to 400 sugar cubes.',
+      aspartame: 'One cube tastes like about 200 sugar cubes.',
+      acek: 'One cube tastes like about 200 sugar cubes.',
+      saccharin: 'One cube tastes like 200 to 700 sugar cubes.',
+      sucralose: 'One cube tastes like about 600 sugar cubes.',
+      neotame: 'One cube tastes like 7,000 to 13,000 sugar cubes.',
+      advantame: 'One cube tastes like about 20,000 sugar cubes.'
     };
     var still = function () { return reduced() || motionOff(); };
     var X0 = 1.35, DX = 0.34, DY = 0.26;                       // the pile's left foot; one cube of depth steps this far right and up
@@ -1889,7 +1897,8 @@
     function kick() { if (!raf && onScreen) { last = 0; raf = requestAnimationFrame(loop); } }
     function caption(k) {
       var d = D[k];
-      capEl.innerHTML = '<b>' + d[3] + '</b> · ' + d[4] + '. ' + d[5] + (d[6] >= 0 ? fn(d[6]) : '');
+      capEl.innerHTML = '<span class="kidline"><b>' + d[3] + '.</b> ' + KID[k] + '</span>' +
+        '<span class="cap__more">' + d[4].charAt(0).toUpperCase() + d[4].slice(1) + '. ' + d[5] + (d[6] >= 0 ? fn(d[6]) : '') + '</span>';
     }
     function select(k, focus) {
       if (!D[k]) return;
@@ -1947,7 +1956,7 @@
     }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
-        onScreen = es[0].isIntersecting;
+        onScreen = es[es.length - 1].isIntersecting;
         if (onScreen && !started) first(); else if (onScreen) kick();
       }, { rootMargin: '0px 0px -12% 0px' }).observe(stage);
     } else { onScreen = true; first(); }
@@ -1962,9 +1971,11 @@
     ctl.hidden = false; slip.hidden = false;
     var btn = $('[data-pull]'), label = $('[data-pull-label]'), count = $('[data-pull-count]');
     var txt = $('[data-fact-text]'), pops = $$('.bpop');
-    var order = [], k = 0, lastPop = -1;
+    var order = [], cur = -1, k = 0, lastPop = -1;         // cur: the fact on the slip (-1 until the first one)
     function shuffle() {
-      order = list.map(function (_, i) { return i; });
+      order = [];
+      list.forEach(function (li, i) { if (li.hasAttribute('data-kid')) order.push(i); });   // the facts that carry a kid line
+      if (!order.length) order = list.map(function (_, i) { return i; });                   // none marked: all of them
       for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
       k = 0;
     }
@@ -1993,22 +2004,37 @@
         if (r.bottom > window.innerHeight - 90 || r.top < 70) slip.scrollIntoView({ block: 'nearest', behavior: reduced() ? 'auto' : 'smooth' });
       }
     }
+    // every fact reaches the slip through here: a copy of its list item, without the footnote's id (the id stays unique, on the list)
+    function fill(f) {
+      txt.innerHTML = list[f].innerHTML.replace(/ id="ref-\d+"/g, '');
+      txt.setAttribute('data-fact-i', f);
+      cur = f;
+    }
+    STICKS.at = function () { return cur; };
     STICKS.show = function (f) {                    // the oyster opens on the oysters-and-zinc fact
-      txt.innerHTML = list[f].innerHTML;
+      f = parseInt(f, 10);
+      if (!list[f]) return;
+      fill(f);
       showSlip();
     };
-    on(btn, 'click', function () {
-      if (k >= order.length) shuffle();
-      var f = order[k++];
-      var p = (lastPop + 1 + Math.floor(Math.random() * (pops.length - 1))) % pops.length;
-      if (lastPop > -1) move(pops[lastPop], false);
-      move(pops[p], true);
-      lastPop = p;
-      txt.innerHTML = list[f].innerHTML;
-      count.textContent = k + ' of ' + order.length;
-      label.textContent = 'Another one';
+    // pull one: fact f, or the next in the shuffled order when f is left out. Returns the index now on the slip.
+    STICKS.pull = function (f) {
+      if (f === undefined || f === null) { if (k >= order.length) shuffle(); f = order[k++]; }
+      f = parseInt(f, 10);
+      if (!list[f]) return cur;                     // not a fact: nothing moves
+      if (pops.length) {
+        var p = (lastPop + 1 + Math.floor(Math.random() * (pops.length - 1))) % pops.length;
+        if (lastPop > -1) move(pops[lastPop], false);
+        move(pops[p], true);
+        lastPop = p;
+      }
+      fill(f);
+      if (count) count.textContent = k + ' of ' + order.length;
+      if (label) label.textContent = 'Tell me another';
       showSlip();
-    });
+      return f;
+    };
+    on(btn, 'click', function () { STICKS.pull(); });
   })();
 
   /* ================================ Moments (pop o'clock) ================================ */
@@ -2087,7 +2113,7 @@
     if (!box) return;
     var wave = '<svg class="wave tile-ground" aria-hidden="true"><use href="#wave-2"/></svg>';
     var tile = {
-      'strawberry-pop': wave + '<span class="print print--card"><span class="print__paper"><img src="_shared/assets/product/pack-mockup.jpg" width="738" height="851" alt="Glo Pop Collagen Boost beauty lollipop pouch, strawberry flavor, with pink lollipops" loading="lazy" decoding="async"></span></span>',
+      'strawberry-pop': wave + '<svg class="pcard__art" viewBox="-100 -100 200 360" aria-hidden="true"><use href="#sh-sunpop" x="-100" y="-100" width="200" height="360"/></svg><p class="art-cap">Kids pack art: ' + TBD + '</p>',
       'green-gummies': wave + '<svg class="pcard__art pcard__art--gummies" viewBox="0 0 200 150" aria-hidden="true"><use href="#sh-gummies" width="200" height="150"/></svg><p class="art-cap">Concept illustration</p>',
       'next-pop': '<svg class="pcard__art pcard__art--traced" viewBox="-100 -100 200 360" aria-hidden="true"><use href="#sh-traced" x="-100" y="-100" width="200" height="360"/></svg><span class="test-swatches" aria-hidden="true"><i></i><i></i><i></i></span><span class="hand" aria-hidden="true">not cut out yet</span>'
     };
@@ -2136,7 +2162,6 @@
     function follow(p) {
       builder.hidden = p.id !== 'strawberry-pop';
       wl.setAttribute('data-variant', p.id === 'next-pop' ? 'next-pop' : 'green-gummies');
-      if (p.id === 'next-pop') { var cb = $('[data-wl-colors]'); if (cb) cb.checked = true; }
     }
     listeners.push(follow);
     follow(byId[current]);
@@ -2171,7 +2196,10 @@
       big = Math.max(4, Math.min(10, big + +b.getAttribute('data-step')));
       update();
     });
-    on(form, 'submit', function (e) { e.preventDefault(); status.hidden = false; FX.from($('[type="submit"]', form)); });
+    // the forms ship disabled in the HTML (without this script they would post to nowhere); the status slip is the only answer to a press
+    var buyBtn = form && $('[type="submit"]', form);
+    if (buyBtn) buyBtn.removeAttribute('disabled');
+    on(form, 'submit', function (e) { e.preventDefault(); status.hidden = false; });
     SHOP.setBags = function (n) {
       var v = n >= 4 ? 4 : n;
       if (n >= 4) big = n;
@@ -2187,11 +2215,14 @@
     var form = $('[data-waitlist]');
     if (!form) return;
     var status = $('[data-wl-status]', form);
+    // the email field and the button ship disabled in the HTML; they work only once this handler is listening
+    var email = $('#wl-email'), joinBtn = $('[type="submit"]', form);
+    if (email) email.removeAttribute('disabled');
+    if (joinBtn) joinBtn.removeAttribute('disabled');
     on(form, 'submit', function (e) {
       e.preventDefault();                          // prototype: nothing leaves the page
       if (form.checkValidity && !form.checkValidity()) { form.reportValidity(); return; }
       status.hidden = false;
-      FX.from($('[type="submit"]', form));
     });
   })();
 
@@ -2206,16 +2237,16 @@
     $$('.qa').forEach(function (d) {
       var s = $('summary', d), body = $('.qa__a', d), anim = null;
       on(s, 'click', function (e) {
-        if (reduced() || !body.animate) return;
+        if (reduced() || motionOff() || !body.animate || doc.documentElement.classList.contains('ori-live')) return;   // kids layer: unfold.css plays the open, close is a cut
         e.preventDefault();
         if (anim) anim.cancel();
         if (!d.open) {
           d.open = true;
           var h = body.offsetHeight;
-          anim = body.animate([{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
+          anim = body.animate([{ height: '0px', opacity: 0 }, { height: h + 'px', opacity: 1 }], { duration: 420, easing: 'steps(4, end)' });
           anim.onfinish = function () { anim = null; };
         } else {
-          anim = body.animate([{ height: body.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 300, easing: 'cubic-bezier(.65,0,.35,1)' });
+          anim = body.animate([{ height: body.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 300, easing: 'steps(4, end)' });
           anim.onfinish = function () { d.open = false; anim = null; };
         }
       });
@@ -2251,7 +2282,7 @@
   });
 
   /* ================================ Zoom (the large view for the taped prints) ================================ */
-  // The gummies label and the pack are links to the image files, so without JS they still open full size (and a
+  // The gummies label is a link to its image file, so without JS it still opens full size (and a
   // phone pinch-zooms them natively). With JS they open one modal paper sheet: Esc or the close button shuts it and
   // focus goes back to the print. When fitting would shrink an image below about half its size (the wide label on a
   // phone) it starts at full size, so a finger pans along it.
@@ -2316,13 +2347,15 @@
   /* ================================ Real3D (the one realistic object: the pop, in the shop) ================================ */
   // The page is cut paper (plus three taped photo prints of the pack and the gummies label); the accurate 3D lollipop
   // appears once, where you buy it, as "the real one".
-  // It loads only when the shop is near, after the page has loaded, never on save-data, and stays a paper
-  // stand-in if WebGL or the CDN is missing. It always shows the strawberry pop (the shop builder it sits
-  // in is only shown for that product). Reduced motion or Pause motion: it holds still, and only renders
-  // while you grab it.
+  // It loads only when someone asks for it: a press on the button that says where it loads from (its label is in
+  // the HTML). The button ships hidden and is offered once the page has loaded, never on save-data; nothing is
+  // requested from the CDN before that press. The pop stays a paper stand-in if the button, WebGL or the CDN is
+  // missing. It always shows the strawberry pop (the shop builder it sits in is only shown for that product),
+  // and a tap on it never takes a bite. Reduced motion or Pause motion: it holds still, and only renders while
+  // you grab it.
   (function real3d() {
-    var slot = $('#pop3d-real'), fig = $('#real');
-    if (!slot || !('IntersectionObserver' in window)) return;
+    var slot = $('#pop3d-real'), fig = $('#real'), btn = $('button[data-real-load]');
+    if (!slot || !btn) return;                                    // no button in the page: the pop stays paper
     function loadScript(src) {
       return new Promise(function (res, rej) {
         if (window.GloCandy) return res();
@@ -2332,38 +2365,49 @@
         doc.head.appendChild(s);
       });
     }
+    var busy = false;                                             // one load at a time; a failed one may be tried again
     function mount() {
-      var conn = navigator.connection;
-      if (conn && conn.saveData) return;                          // stays paper on save-data
+      if (busy || slot.classList.contains('is-3d')) return;
+      busy = true;
       var lite = window.matchMedia('(pointer: coarse)').matches || (navigator.deviceMemory || 8) <= 4;
-      var io = new IntersectionObserver(function (es) {
-        if (!es[0].isIntersecting) return;
-        io.disconnect();
-        loadScript('_shared/candy3d.js').then(function () {
-          if (!window.GloCandy) return null;
-          return window.GloCandy.create($('.pop3d__mount', slot), {
-            product: PRODUCTS[0].candy, preset: 'gloss', environment: 'beach', quality: lite ? 'low' : 'medium',
-            assets: !lite, zoom: 1, spin: 0.0016, tilt: 0.3, bob: false, pointerTilt: false
-          });
-        }).then(function (candy) {
-          if (!candy) return;                                     // stays paper
-          slot.classList.add('is-3d');
-          if (fig) fig.classList.add('is-3d');
-          DECOR.push(candy);
-          // held still (reduced motion / Pause motion): render only while it's being handled
-          var idleT = 0, held = function () { return reduced() || motionOff(); };
-          candy.__rest = function () { clearTimeout(idleT); idleT = setTimeout(function () { if (held()) candy.pause(); }, 1600); };
-          on(slot, 'pointerdown', function () { if (held()) { clearTimeout(idleT); candy.resume(); } });
-          on(slot, 'pointerup', function () { candy.__rest(); });
-          on(slot, 'pointercancel', function () { candy.__rest(); });
-          if (held()) candy.__rest();
-        }).catch(function () { /* stays paper */ });
-      }, { rootMargin: '600px 0px' });
-      io.observe(slot);
+      loadScript('_shared/candy3d.js').then(function () {
+        if (!window.GloCandy) return null;
+        return window.GloCandy.create($('.pop3d__mount', slot), {
+          product: PRODUCTS[0].candy, preset: 'gloss', environment: 'beach', quality: lite ? 'low' : 'medium',
+          assets: !lite, zoom: 1, spin: 0.0016, tilt: 0.3, bob: false, pointerTilt: false, bite: false
+        });
+      }).then(function (candy) {
+        busy = false;
+        if (!candy) return;                                       // stays paper
+        slot.classList.add('is-3d');
+        if (fig) fig.classList.add('is-3d');
+        btn.hidden = true;                                        // the pop is here: the offer goes
+        DECOR.push(candy);
+        // held still (reduced motion / Pause motion): render only while it's being handled
+        var idleT = 0, held = function () { return reduced() || motionOff(); };
+        candy.__rest = function () { clearTimeout(idleT); idleT = setTimeout(function () { if (held()) candy.pause(); }, 1600); };
+        on(slot, 'pointerdown', function () { if (held()) { clearTimeout(idleT); candy.resume(); } });
+        on(slot, 'pointerup', function () { candy.__rest(); });
+        on(slot, 'pointercancel', function () { candy.__rest(); });
+        if (held()) candy.__rest();
+      }).catch(function () { busy = false; /* stays paper */ });
     }
-    if (doc.readyState === 'complete') setTimeout(mount, 200); else on(window, 'load', function () { setTimeout(mount, 200); });
+    on(btn, 'click', mount);
+    function offer() {
+      var conn = navigator.connection;
+      if (conn && conn.saveData) return;                          // stays paper on save-data: the button is never offered
+      btn.hidden = false;
+    }
+    if (doc.readyState === 'complete') setTimeout(offer, 200); else on(window, 'load', function () { setTimeout(offer, 200); });
   })();
 
+  // the seam: what a later script (the kids layer) may use. `products` stays the last assignment: its presence means this file ran to the end.
+  window.PaperSun.stage = STAGE;            // { still(), running(), add(part), kick(), wind(), gust(), dy(), dir(), y() }
+  window.PaperSun.fx = FX;                  // { burst(x, y, opts), from(el, opts) }; a no-op while motion is off
+  window.PaperSun.reduced = reduced;        // function () -> boolean, the live media query
+  window.PaperSun.motionOff = motionOff;    // function () -> boolean, html[data-motion="off"]
+  window.PaperSun.sticks = STICKS;          // { show(i), pull(i), at() }; an empty object if #sticks is missing
+  window.PaperSun.onTheme = function (fn) { listeners.push(fn); };   // fn(product) after every applyTheme()
   window.PaperSun.setProduct = function (id) { setProduct(id, null, { instant: true }); };
   window.PaperSun.products = PRODUCTS;
 })();

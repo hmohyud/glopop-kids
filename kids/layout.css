@@ -1,0 +1,206 @@
+/* ---- kids/layout.css ---- */
+/* Fold-Along Bay: where the new structure sits (build plan 4.3, spec 3 and S5). core.css defines, this sheet places:
+   the kid sections around their fold mats, the signpost, the blocks that moved into the grown-ups zone, the two
+   link sets, the menu and bar gates, kid type and the zone's calm look. Nothing here animates except the bar's
+   stepped entrance. Linked after style.css and kids/core.css, unlayered. */
+
+/* ---------- 1. The zone switch: nav sets, header end, menu, bar (spec S5, exactly) ---------- */
+/* html[data-zone] is "kid" or "grown" (kids/core.js). Absent (the core is missing) is styled as kid. */
+html:not([data-zone="grown"]) li.nav__zone, html:not([data-zone="grown"]) li.menu__zone, html:not([data-zone="grown"]) a.hdr__shop { display: none; }
+html[data-zone="grown"] li.nav__kid, html[data-zone="grown"] a.hdr__grown { display: none; }
+
+/* the bar is gated by transform and visibility, never by display: a transition cannot run on an element that
+   has just left display: none. Held off screen with visibility: hidden it cannot be focused or read. */
+@media (max-width: 1023px) { html:not([data-zone="grown"]) .bar { transform: translateY(160%); visibility: hidden; transition: none; } }
+html.ori .bar { transition: none; }                       /* style.css's smooth 420 ms slide goes in every mode, Pause included */
+html.ori-live[data-zone="grown"] .bar.is-on { transition: transform var(--dur-fold, 480ms) steps(3, end); }   /* folds up in three held frames; leaves as a cut */
+/* the ticket's top edge is folded over: a 5 px hem showing the reverse, a hairline under it (::before is the ticket itself) */
+.bar::after {
+  content: ""; position: absolute; left: 12px; right: 12px; top: 0; z-index: -1; height: 5px; pointer-events: none;
+  background-color: var(--rev-sheet, #fff); box-shadow: 0 1px 0 var(--crease-d, rgba(74, 13, 46, .16));
+}
+
+/* header end, every width: "Grown-ups" (kid zone) or "Shop" (grown-ups zone), then the menu button */
+.hdr__end { gap: 12px; }                                  /* 48 px targets, 12 px apart */
+.hdr__grown, .hdr__shop { min-height: 48px; }
+.menu-btn, .menu__top .icon-btn { width: 48px; height: 48px; }   /* the menu's close button sits where its open button was */
+@media (max-width: 379px) { .hdr__grown { padding: 0 11px; font-size: 14px; } }   /* a 360 px phone: logo, link and menu button on one row */
+
+/* the menu sheet: two headed lists. The grown-ups list is one link ("Start here") until the zone is grown */
+.menu__sec { display: grid; gap: 4px; }
+.menu__h { margin: 0; font-size: 13px; font-weight: 750; font-stretch: 112%; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-ink); }
+.menu__sec + .menu__sec .menu__nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+.menu__sec + .menu__sec .menu__nav a { min-height: 48px; font-size: 22px; font-weight: 720; font-stretch: 108%; letter-spacing: -.01em; }
+
+/* ---------- 2. Kid type and targets (spec 2.1 rule 8, spec 6) ---------- */
+/* body copy a seven-year-old reads: Archivo at normal width, 18 px or more, line height 1.5, left aligned */
+.kid .lead, .kid .mat__say, .kid .suncard p, .kid .wheel__safe, .kid .taste__how, .kid .hero__about, .kid .final__note {
+  font-stretch: 100%; line-height: 1.5; text-align: left;
+}
+.kid .mat__say, .kid .suncard p, .kid .wheel__safe, .kid .taste__how, .kid .hero__about, .kid .final__note { font-size: 18px; }
+/* a kid line sits above the sentence it paraphrases; the sentence and its footnote stay, smaller, underneath */
+.kid .kidline { display: block; font-size: 20px; font-weight: 620; font-stretch: 100%; line-height: 1.4; letter-spacing: 0; color: var(--ink); }
+.kid .kidline b { font-weight: 800; }
+.kid .cap__more { display: block; margin-top: 4px; font-size: 15.5px; font-weight: 400; line-height: 1.5; color: var(--ink-2); }
+.kid .fact-slip__t[data-fact-i] { font-size: 15.5px; font-weight: 400; line-height: 1.5; letter-spacing: 0; color: var(--ink-2); }
+.kid .fact-slip__t[data-fact-i] .kidline { margin-bottom: 6px; }
+.kid .fn a::after { inset: -8px; }                        /* 24 px footnote targets that do not swallow the line above */
+/* targets: 64 px for the one primary action of a stage, 48 px for the rest */
+.kid [data-pull] { min-height: 64px; }
+.kid .btn--sm, .kid [data-taste-toggle] { min-height: 48px; }
+/* kid headings carry longer cut strips than the lines they replace: a size at which a strip stays on one line */
+@media (min-width: 1024px) { .kid .chead .h2 { font-size: clamp(2rem, 1.25rem + 2.7vw, 3.75rem); } }
+
+/* ---------- 3. #top: fold a boat ---------- */
+/* Headline, one line, the paper, the "about" line: that is the whole copy column. The paper is the only control,
+   so the Pause / Paper sounds row is not part of the hero (the header keeps its pause icon; the menu and the footer
+   keep both switches). Everything stays inside --tw. */
+.hero__play { margin-top: 18px; }
+#top .prefs { display: none; }
+.hero__about { margin: 14px 0 0; }
+.hero__about .tlink { min-height: 48px; margin-block: -10px; }   /* a 48 px target that does not push its line apart */
+@media (min-width: 1024px) {
+  /* The hero stays exactly one viewport tall (1180 x 820, 1440 x 900): a headline that fits the copy column on one
+     line, a little less air above it, and a stage as tall as a third of the window (at most 300 px). Nothing in
+     the column changes size when the paper is folded, so nothing moves. */
+  .hero.kid .hero__inner { padding-top: calc(var(--header-h) + clamp(16px, 3vh, 64px)); }
+  .hero.kid .h1 { font-size: clamp(2.75rem, calc(var(--tw) / 8), 6rem); }   /* the whole line is 7.65 em wide (measured) */
+  .hero__play > .mat { --mat-size: clamp(200px, 33vh, 300px); }
+}
+
+/* ---------- 4. #sugar: the head beside the cube mat ---------- */
+/* two columns, both centred on one line: the head, and the stage in the middle of its own column (the pile grows
+   to the full width of the stage, and the "New paper" button needs the room to its right) */
+.sugar__top { display: grid; gap: 28px var(--gutter); align-items: center; margin-bottom: clamp(36px, 4.4vw, 56px); }
+.sugar__top > .chead { margin-bottom: 0; }
+@media (min-width: 1024px) {
+  .sugar__top { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .sugar__top > .mat { justify-self: center; }
+}
+.kid .taste__how { color: var(--ink-2); }
+/* on the pink sheet an accent button would vanish into it: there a primary button is cut from white paper, like
+   the sheet's own headline strip (its under-sheet stays the dark accent) */
+.kid.sheet--pink .btn--primary { background-color: var(--paper-white); background-image: none; color: var(--ink); }
+
+/* ---------- 5. #sticks: grid areas ---------- */
+/* Default: the mat shows its still under the head, and .sticks__ctl ("Tell me one") is the working fallback.
+   The "scraps" area is named in every layout so the fortune teller's scraps always have a cell. */
+.sticks__grid > .mat { grid-area: mat; align-self: start; }
+.sticks__grid { grid-template-areas: "head" "mat" "bucket" "ctl" "slip" "scraps"; }
+@media (min-width: 768px) and (max-width: 1023px) { .sticks__grid { grid-template-areas: "head head" "mat mat" "bucket slip" "ctl scraps"; } }
+@media (min-width: 1024px) {
+  .sticks__grid { grid-template-areas: "head bucket slip" "mat bucket slip" "ctl bucket scraps"; }
+  .sticks .chead .h2 { font-size: clamp(2rem, 1rem + 2.3vw, 3.25rem); }   /* the head is one column of three here */
+}
+/* Once the fortune teller has proven itself (it sets has-teller on #sticks after a successful start) the flaps
+   replace the fallback button and the areas are spec K6's */
+.sticks.has-teller .sticks__ctl { display: none; }
+.sticks.has-teller .sticks__grid { grid-template-areas: "head" "mat" "slip" "scraps" "bucket"; }
+@media (min-width: 768px) and (max-width: 1023px) { .sticks.has-teller .sticks__grid { grid-template-areas: "head head" "mat slip" "bucket scraps"; } }
+@media (min-width: 1024px) { .sticks.has-teller .sticks__grid { grid-template-areas: "head bucket slip" "mat bucket slip" "mat bucket scraps"; } }
+/* the stage is the whole mat now: it takes the width its column has under the head */
+@media (min-width: 1024px) { .sticks__grid > .mat { --mat-size: 240px; } }
+@media (min-width: 1280px) { .sticks__grid > .mat { --mat-size: 290px; } }
+
+/* ---------- 6. #sun: the pinwheel mat, its safety line, the sun card ---------- */
+.sun__play { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.wheel__safe { margin: 0; text-wrap: balance; }
+@media (min-width: 1024px) { .sun__play > .mat { --mat-size: 300px; } }   /* the stage is the whole mat: nothing under it moves when the paper is folded */
+.suncard { display: grid; gap: 10px; margin-top: 14px; }
+.suncard__t { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 20px; font-weight: 780; font-stretch: 110%; letter-spacing: -.01em; line-height: 1.15; }
+.suncard__t .i { color: var(--accent-ink); }
+@media (max-width: 767px) {
+  /* phone order: play, the beach bag, then the card */
+  .sun__play { display: contents; }
+  .sun__play > .wheel__safe { margin-top: -20px; }
+  .sun__grid > .bagscene { order: 2; }
+  .sun__play > .suncard { order: 3; margin-top: 0; }
+}
+/* the beach bag holds a pinwheel now (sh-popmini, 60 x 210), standing where the lollipop stood */
+.bagscene__pop { left: 46%; top: 37%; width: 15%; aspect-ratio: 60 / 210; }
+
+/* ---------- 7. #final: the text column ---------- */
+/* a centred column (style.css). Its lead and its note are left-aligned kid copy (spec 2.1 rule 8): they take the
+   same box, so they share one left edge under the centred headline instead of each floating on its own */
+.final.kid .lead, .final__note { width: min(100%, 34rem); max-width: none; }
+.final__note { margin: 0; color: var(--ink-2); text-wrap: balance; }
+/* under the centred shelf and its centred buttons the note is one line in a box of its own width, so it sits
+   under the middle of the buttons instead of hanging off their left end (integration) */
+.final__text > .final__note { width: fit-content; max-width: min(100%, 48rem); }
+/* the sunset boat is scenery and the end of the trip: larger than the hero's, so the folded facets and the
+   paper colour the child chose can be seen in front of the sun (app.js measures the boat, whatever its size) */
+.sunset .boat { --bw: clamp(56px, 6.6vw, 96px); }
+
+/* ---------- 8. #grownups: the signpost ---------- */
+/* one viewport tall with the tent centred, so when the tent is centred nothing else shares the screen.
+   Same padding above and below: the last --edge-h px of a sheet lie under the next one. */
+#grownups {
+  --signpost-pad: max(calc(var(--edge-h) + var(--sheet-pad)), calc(var(--edge-h) * 2 + var(--hem-h, 18px) + 64px));
+  display: flex; flex-direction: column; justify-content: center; min-height: 100vh; min-height: 100svh;
+  padding-top: var(--signpost-pad); padding-bottom: var(--signpost-pad);
+}
+/* the paper-mache band lies across the top of the sheet, below the seam (and its hem), clear of the tent */
+#grownups > .mache { position: absolute; left: 0; right: 0; top: calc(var(--edge-h) * 2 + var(--hem-h, 18px) + 12px); }
+/* the tent card: the heading panel is the far face (in shade), the body the near one; a mountain crease between */
+.tent { max-width: 720px; margin-inline: auto; border-radius: var(--radius-card); background-color: var(--paper-white); box-shadow: var(--shadow-card); }
+.tent__h {
+  margin: 0; padding: clamp(20px, 3vw, 30px) clamp(20px, 3.6vw, 40px) clamp(16px, 2.2vw, 22px);
+  border-radius: var(--radius-card) var(--radius-card) 0 0; background-color: var(--ob2, #EDE7EA);
+  box-shadow: inset 0 -1px 0 var(--crease-l, rgba(255, 255, 255, .6));
+  font-size: clamp(1.75rem, 1.3rem + 1.9vw, 2.75rem); font-stretch: 108%;
+}
+.tent__body {
+  display: grid; gap: 14px; padding: clamp(20px, 2.8vw, 28px) clamp(20px, 3.6vw, 40px) clamp(22px, 3vw, 32px);
+  box-shadow: inset 0 1px 0 var(--crease-d, rgba(74, 13, 46, .16));
+  font-size: 17px; line-height: 1.55;
+}
+.tent__body > p { max-width: 62ch; }
+.tent__stop { font-size: var(--fs-lead); font-weight: 620; line-height: 1.4; }
+.tent__back .tlink { min-height: 48px; margin-left: 4px; }
+/* the index: plain text links, no button styling, no price */
+.tent__index { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: 4px; padding: 12px 0 0; border-top: 1.5px dashed var(--line); list-style: none; }
+.tent__index a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.tent__index a:hover { text-decoration-color: var(--ink); }
+
+/* ---------- 9. #pop: the masthead first, the pack block last (both span the grid) ---------- */
+.pop__grid > .mast, .pop__grid > .packblock { grid-column: 1 / -1; }
+.mast { padding-bottom: clamp(28px, 4vw, 48px); background: var(--crease-pair-h, linear-gradient(to bottom, rgba(74, 13, 46, .16) 0 1px, rgba(255, 255, 255, .6) 1px 2px, #0000 2px)) left bottom / 100% 2px no-repeat; }
+.mast__h { margin-bottom: 22px; }
+@media (max-width: 599px) { .mast__h { margin-bottom: 18px; } }
+/* the pack block reads as its own block: a crease hairline pair and 32 px of space above it */
+.packblock { margin-top: clamp(20px, 3.6vw, 48px); padding-top: 32px; background: var(--crease-pair-h, linear-gradient(to bottom, rgba(74, 13, 46, .16) 0 1px, rgba(255, 255, 255, .6) 1px 2px, #0000 2px)) left top / 100% 2px no-repeat; }
+.packblock > .notice { margin: 0 0 24px; }
+.packblock > .h2 { margin-bottom: 20px; }
+.packblock > .lead { margin-bottom: clamp(24px, 3vw, 40px); }
+.packblock > .readpack { margin-top: 0; }
+.readpack__text > .gp-stamp { margin-top: 6px; }
+
+/* ---------- 10. #inside, #ritual, #sources: the blocks they received ---------- */
+/* "All 12 facts" is the clean list of twelve sourced sentences: kid lines belong to the kid zone only */
+.zone .facts-list .kidline { display: none; }
+.inside .sticks__all { margin-top: 26px; }
+.sunrules, .closing { margin-top: clamp(48px, 6vw, 80px); padding-top: 32px; background: var(--crease-pair-h, linear-gradient(to bottom, rgba(74, 13, 46, .16) 0 1px, rgba(255, 255, 255, .6) 1px 2px, #0000 2px)) left top / 100% 2px no-repeat; }
+.sunrules > .h2 { margin-bottom: 20px; }
+.sunrules > .lead { margin-bottom: clamp(24px, 3vw, 40px); }
+@media (min-width: 1024px) {
+  .sunrules .sun__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+  .sunrules .scard { grid-template-columns: minmax(0, 1fr); }
+  .sunrules .scard > :not(.scard__t) { grid-column: 1; }
+}
+.closing { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.closing__h { margin: 0; font-size: clamp(2.2rem, 1.2rem + 3.6vw, 4.5rem); }
+.closing .lead { max-width: 44ch; }
+
+/* ---------- 11. #shop and the footer: new controls and lines ---------- */
+.real__load { min-height: 48px; padding-block: 10px; white-space: normal; text-align: left; line-height: 1.25; }
+/* the email field and both submit buttons ship disabled until app.js is listening: they must not look live */
+.zone .btn:disabled, .zone .field:disabled { opacity: .5; cursor: default; }
+.zone .btn:disabled { pointer-events: none; }
+.ftr__saved { max-width: 46ch; margin: 0; font-size: 14px; line-height: 1.5; color: rgba(255, 246, 238, .9); }
+
+/* ---------- 12. The grown-ups zone's calm look (spec 3.4) ---------- */
+/* same paper, calmer temperament: cut strips, stamps, slips, swing tags and prints rest at 0 degrees */
+html .zone .cut { transform: none; }                      /* html: also beats style.css's reduced-motion html.js .cut */
+.zone .tag, .zone .tag--line, .zone .slip, .zone .swing { transform: none; }
+.zone .print { --tilt: 0deg; }
+.zone .flutter { display: none; }

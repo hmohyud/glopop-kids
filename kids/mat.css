@@ -1,0 +1,90 @@
+/* ---- kids/mat.css ---- */
+/* The fold mat: the paper is the button. A mat is one square stage and nothing else: no "Next fold", no dots, no
+   caption. Beside it only a handwritten note until the first tap, and one small round button once the model is
+   folded. The stage has no background: the sheet is drawn, and it lies on the beach (spec R2). `--mat-size` and
+   its base breakpoints are in kids/core.css; kids/layout.css gives each section's mat its size.
+   Nothing here animates: every frame is drawn by kids/mat.js on the shared clock, so Pause, reduced motion and a
+   dead app.js need no rule of their own. */
+.mat { position: relative; width: var(--mat-size); max-width: 100%; }
+.mat__stage { position: relative; width: var(--mat-size); height: var(--mat-size); }
+.mat__art { position: relative; z-index: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* The old controls are still in the HTML (index.html is cleaned up later): none of them is shown. Their box is
+   dissolved, so the fortune teller's flaps (which live in it) still lie over the stage. The line is the screen
+   reader's: a live region, visually hidden. */
+.mat__ctl { display: contents; }
+.mat__go, .mat__alt, .mat__dots, .mat__wrinkle, .mat__ball { display: none !important; }
+.mat__say { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* the stage once the engine has bound it (it sets data-step): role="button", one tap is the next thing */
+.mat[data-step] .mat__stage { cursor: pointer; -webkit-user-select: none; user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.mat__stage:focus { outline: none; }
+.mat__stage:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; border-radius: 10px; }
+
+/* "New paper": the one small way to start over, beside the finished model and only then */
+.mat__new {
+  position: absolute; left: calc(var(--mat-size) + 4px); bottom: 9%; z-index: 4; display: none; place-items: center; width: 48px; height: 48px; margin: 0; padding: 0;
+  border: 0; border-radius: 50%; background-color: var(--paper-white); color: var(--ink); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 0 rgba(74, 13, 46, .26), 0 7px 8px -4px rgba(74, 13, 46, .3);
+}
+.mat[data-step="done"][data-busy="false"] .mat__new { display: grid; }
+.mat__new .i { width: 22px; height: 22px; }
+.mat__new:hover { translate: 0 -2px; }
+.mat__new:active { translate: 0 1px; }
+.mat__new:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* the invitation: a handwritten note with a little arrow, to the right of the sheet, until the first tap on any
+   mat (kids/mat.js then removes every note for good). The arrow is the sprite's swoop, mirrored: it points down
+   and left, at the paper */
+.mat__hint { position: absolute; left: calc(var(--mat-size) - 6px); top: 7%; z-index: 4; display: none; flex-direction: column; align-items: flex-start; pointer-events: none; }
+.mat[data-step="0"] .mat__hint { display: flex; }
+.mat__hint .hand { margin-left: 30px; white-space: nowrap; transform: rotate(-4deg); }
+.mat__hint svg { width: 80px; height: 44px; margin-top: 4px; overflow: visible; transform: scaleX(-1) rotate(-6deg); }
+
+/* The hero sea boat (spec K2; build plan 4.5 puts both rules in this file). Without them the boat hung in mid-air
+   beside the copy whenever the theatre never ran (reduced motion at load, app.js blocked), and sailed before
+   anything was folded. The boat feature sets .is-afloat (a tap on the folded boat).
+   One number differs from the spec: the still pose sits at .78 of the sea height, not .55. At .55 the boat lies
+   behind the back wave (nothing shows at 1180 and 1440 wide, a mast tip at 390 and 820). app.js's own rest pose
+   (restBoat, touch 12) puts the boat's bottom edge at .72 to .84 of the sea height from 360 to 1920 px wide
+   (measured: scratch design\checks\gate1\diag-boatpose-*.json); .78 keeps the hull in the water at every width. */
+.hero__art:not(.sea-live) .boat { left: calc(14% - var(--bw) / 2); top: auto; bottom: calc(var(--sea-h) * .78); }
+html.ori .hero .boat:not(.is-afloat) { visibility: hidden; }   /* visibility, not hidden: measure() still reads its width */
+/* the folded boat on its way from the stage to the sea: a copy of the finished still that kids/boat.js lays over
+   the stage and moves in held poses (translate, rotate, scale), in front of the copy */
+.boat-fly { position: absolute; z-index: 5; pointer-events: none; transform-origin: 50% 50%; }
+.boat-fly svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* the drawn shadow of a fold frame, and of a still that names no outline: one path of everything that is paper
+   in that frame (a still with an outline keeps the plain .osh polygon) */
+.mat__shp { fill: #4A0D2E; fill-opacity: .2; stroke: none; }
+
+/* a crease that stayed is a hairline pair: .ck (kids/core.css) is the dark line, this is its lit twin */
+.ck.ck-l { stroke: var(--crease-l); }
+
+/* K3: the wad a scrunched sheet becomes (kids/mat.js wad): the stock's own colour, small facets over it in tones
+   that barely differ, one soft light across the whole (.wd-vol, a gradient in the art's defs), a facet of the other
+   side here and there, and short creases as hairline pairs. Little contrast: paper, not a gem */
+.wd { fill: var(--o3); stroke: var(--o4); stroke-width: 1; stroke-linejoin: round; }
+.wd-l1, .wd-l2, .wd-d1, .wd-d2, .wd-r, .wd-vol { stroke: none; }
+.wd-l1 { fill: #fff; fill-opacity: .1; }
+.wd-l2 { fill: #fff; fill-opacity: .2; }
+.wd-d1 { fill: #4A0D2E; fill-opacity: .05; }
+.wd-d2 { fill: #4A0D2E; fill-opacity: .1; }
+.wd-r { fill: var(--ob1); fill-opacity: .82; }
+.wd-k { fill: none; stroke: rgba(74, 13, 46, .3); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.wd-k.wd-kl { stroke: rgba(255, 255, 255, .5); }
+
+/* Ori.mat.still / Ori.mat.map in their two other modes. plan: the pencil outline, no fills (the shelf).
+   print: black on white, the colour side grey (the fold sheet). */
+.mat-plan { fill: none; stroke: var(--crease-ink); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.mat-pw { fill: #fff; stroke: #fff; stroke-width: .6; }
+.mat-pg { fill: #d9d9d9; stroke: #d9d9d9; stroke-width: .6; }
+.mat-po, .mat-pt { fill: none; stroke: #000; stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.mat-pt { fill: #fff; stroke-dasharray: 2 2; }
+.cv.mat-pc, .cm.mat-pc, .ck.mat-pc { stroke: #000; }
+.mat-numc { fill: var(--paper-white); stroke: var(--crease-ink); stroke-width: .5; }
+.mat-numc.mat-pc { fill: #fff; stroke: #000; }
+.mat-num, .mat-lab { font-family: Archivo, system-ui, sans-serif; font-weight: 700; font-size: 4.6px; text-anchor: middle; dominant-baseline: central; fill: var(--oink); }
+.mat-num.mat-pn, .mat-lab { fill: #000; }
+.mat-lab { font-weight: 600; font-size: 3.4px; }

@@ -1,0 +1,101 @@
+/* ---- kids/teller.css ---- */
+/* Fold-Along Bay: the fortune teller's four numbered flaps (spec K6), the scraps of old facts and the smoothed
+   fact slip (spec K7). Nothing here animates: every frame is drawn by kids/teller.js on the shared clock, so Pause,
+   reduced motion and a dead app.js need no rule of their own. No keyframe, no transition. */
+
+/* ---------- K6: the flaps, a 2 x 2 grid centred on the stage ---------- */
+/* The group covers the stage square (the stage is the mat's first cell at every width); only the buttons take
+   the pointer. Four 64 px targets, 12 px apart, 140 px in all: they fit the 160 px phone stage. */
+.teller__flaps { position: absolute; left: 0; top: 0; z-index: 3; width: var(--mat-size); height: var(--mat-size); pointer-events: none; }
+.teller__flaps[hidden], .flap[hidden], .scraps[hidden] { display: none; }
+/* a flap is a small numbered tag of white paper with one corner folded over (the pink is its reverse); the
+   button itself is the whole 64 px square */
+.flap {
+  position: absolute; isolation: isolate; display: grid; place-items: center; width: 64px; height: 64px; margin: 0; padding: 0 2px 2px 0;
+  border: 0; border-radius: 8px; background: none; color: var(--ink); cursor: pointer; pointer-events: auto;
+  font: 800 25px/1 Archivo, system-ui, sans-serif; font-stretch: 100%; font-variant-numeric: tabular-nums;
+  filter: drop-shadow(0 1px 0 rgba(74, 13, 46, .28)) drop-shadow(0 5px 4px rgba(74, 13, 46, .3));
+  -webkit-tap-highlight-color: transparent;
+}
+.flap::before {
+  content: ""; position: absolute; z-index: -1; inset: 10px; background-color: var(--paper-white);
+  background-image: linear-gradient(225deg, #0000 0 10.5px, rgba(74, 13, 46, .2) 10.5px 11.5px, var(--accent-soft) 11.5px 20.5px, #0000 20.5px),
+    linear-gradient(to bottom, rgba(74, 13, 46, .07), #0000 40%);
+  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+}
+.flap[data-slot="1"] { left: calc(50% - 70px); top: calc(50% - 70px); rotate: -5deg; }
+.flap[data-slot="2"] { left: calc(50% + 6px); top: calc(50% - 70px); rotate: 4deg; }
+.flap[data-slot="3"] { left: calc(50% - 70px); top: calc(50% + 6px); rotate: 3deg; }
+.flap[data-slot="4"] { left: calc(50% + 6px); top: calc(50% + 6px); rotate: -4deg; }
+.flap:hover { translate: 0 -3px; }
+.flap:active { translate: 0 1px; }
+.flap:focus-visible { outline: 3px solid var(--ink); outline-offset: -5px; }
+/* the writing under a lifted flap */
+.tl-ink { fill: none; stroke: var(--oink); stroke-opacity: .5; stroke-width: 1.1; stroke-linecap: round; }
+
+/* ---------- K7: the scraps ---------- */
+.scraps { grid-area: scraps; align-self: start; display: grid; gap: 10px; min-width: 0; }
+.scraps__h { margin: 0; font-size: 18px; font-weight: 500; font-stretch: 100%; line-height: 1.5; text-align: left; color: var(--ink); }
+.scraps__list { display: flex; flex-wrap: wrap; gap: 12px; min-height: 64px; margin: 0; padding: 0; list-style: none; }
+.scrap { display: block; width: 64px; height: 64px; margin: 0; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.scrap svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.scrap:hover { translate: 0 -3px; }
+.scrap:active { translate: 0 1px; scale: .95; }
+.scrap:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.scrap.is-landing { translate: -6px -14px; scale: 1.22; }      /* the one held frame before it comes to rest */
+.scrap.is-out { translate: -18px 8px; scale: .6; opacity: .45; }   /* the oldest, pushed out by a fourth */
+
+/* the crumpled ball (kids/teller.js ballMarkup) and the loose facets of a slip being scrunched: white paper,
+   berry shade, one light from the upper left */
+.sb { fill: var(--paper-white); stroke: rgba(74, 13, 46, .3); stroke-width: 1.2; stroke-linejoin: round; }
+.sb-l { fill: #fff; }
+.sb-d1 { fill: #4A0D2E; fill-opacity: .07; }
+.sb-d2 { fill: #4A0D2E; fill-opacity: .15; }
+.sb-d3 { fill: #4A0D2E; fill-opacity: .27; }
+.sb-sh { fill: #4A0D2E; fill-opacity: .2; }
+.sb-k, .sb-kl, .sb-i, .sb-a { fill: none; stroke-linecap: round; }
+.sb-k { stroke: rgba(74, 13, 46, .3); stroke-width: .9; }
+.sb-kl { stroke: rgba(255, 255, 255, .95); stroke-width: 1.3; }
+.sb-i { stroke: var(--ink); stroke-opacity: .62; stroke-width: 2.4; }
+.sb-a { stroke: var(--accent-ink); stroke-width: 2.4; }
+
+/* the ghost of the old slip: it lies over the slip's own cell, then scrunches away toward the scraps */
+.fact-ghost {
+  grid-area: slip; position: relative; z-index: 3; align-self: center; box-sizing: border-box; overflow: hidden; padding: 26px 26px 28px;
+  border-radius: 4px 10px 10px 4px; background-color: var(--paper-white); pointer-events: none;
+}
+.fact-ghost .fact-slip__t { margin: 0; }
+.fact-ghost.is-blank .fact-ghost__in { visibility: hidden; }
+.fact-ghost__f { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* a slip that was a ball: crumple in its 16 px margin ring only (masked off the words), crease ticks at thirds of
+   each edge, a dog-ear crease in two corners. The slip's own text area carries no image. */
+.fact-slip.is-smoothed {
+  --wrinkle: .3;
+  background-image:
+    linear-gradient(to right, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to right, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to right, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to right, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to bottom, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to bottom, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to bottom, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(to bottom, rgba(74, 13, 46, .26) 0 1px, rgba(255, 255, 255, .9) 1px 2px, #0000 2px),
+    linear-gradient(45deg, #0000 calc(50% - 1px), rgba(74, 13, 46, .24) calc(50% - 1px) 50%, #0000 50%),
+    linear-gradient(45deg, #0000 calc(50% - 1px), rgba(74, 13, 46, .24) calc(50% - 1px) 50%, #0000 50%);
+  background-repeat: no-repeat;
+  background-size: 2px 14px, 2px 14px, 2px 14px, 2px 14px, 14px 2px, 14px 2px, 14px 2px, 14px 2px, 22px 22px, 22px 22px;
+  background-position: 33.3% 0, 66.6% 0, 33.3% 100%, 66.6% 100%, 0 33.3%, 0 66.6%, 100% 33.3%, 100% 66.6%, 100% 0, 0 100%;
+}
+.fact-slip.is-smoothed::after {
+  content: ""; position: absolute; inset: 0; box-sizing: border-box; padding: 16px; border-radius: inherit; pointer-events: none;
+  background-image: var(--crumple, none), var(--crumple, none); background-size: 256px, 190px; background-position: 0 0, 40px 70px;
+  opacity: calc(var(--wrinkle) * 2.6);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+/* ---------- the print sheet (kids/shelf.js wraps each model in [data-print-model]) ---------- */
+/* eight kid lines in eight 30 mm triangles: small type; the flap digits (their label is turned 360) stay big */
+[data-print-model="teller"] .mat-lab { font-size: 1.25px; font-weight: 500; }
+[data-print-model="teller"] .mat-lab[transform$="rotate(360)"] { font-size: 5px; font-weight: 800; }

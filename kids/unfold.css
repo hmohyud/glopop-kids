@@ -1,0 +1,156 @@
+/* ---- kids/unfold.css ---- */
+/* Fold-Along Bay: stepped 2D unfolds for anything that holds words (spec S3) and the grown-ups folds G1 to G5
+   (build plan 4.7). CSS only, on state the page already has: details[open], :not([hidden]), [data-show], .swap,
+   .drop, .rv.in, :checked, and the core's .is-in.
+   Four rules run through the whole sheet:
+   1. Every animation, every transition and every rest state that hides, folds or clips is written under
+      html.ori-live. Take the class away (Pause, reduced motion, a dead app.js) and the content is simply open.
+   2. A crease that stayed (a hairline pair, never under text) is always on.
+   3. Held frames only: steps(1, end) keyframes with named poses. Closing is always a cut.
+   4. Fast. The first pose is on screen in the frame of the trigger, there are at most two in-between poses of
+      about 60 ms, and the thing lies flat within 180 ms. No stagger longer than that, and no wait before a fold
+      starts: an unfold that takes longer reads as the page rendering slowly.
+   On .card, .pcard and .label-card this sheet sets animation and clip-path and nothing else (kids/paper.css owns
+   their background-image and padding). Linked after kids/paper.css, unlayered. */
+
+/* ---------- 1. The five keyframes (all five are on the core's settle list) ---------- */
+/* openfold: a letter folded in thirds, opened downward. Three held clips. The side and bottom insets go negative
+   on the last pose so a card's shadow is not cut while the clip is still there.
+   It also carries four custom properties for the length of the unfold, so a panel can shade its newest third
+   (spec 4.4, "fold shade"): --unfold-a / --unfold-b are the top and bottom of the third that has just come
+   down, --unfold-tint and --unfold-line its shade and the crease it hangs from. Unregistered properties hold
+   their keyframe value under steps(1, end), and they are gone the moment the animation ends. */
+@keyframes openfold {
+  0%        { clip-path: inset(0 -24px 66% -24px);         --unfold-a: 0%;  --unfold-b: 34%;  --unfold-tint: var(--fold-shade); --unfold-line: var(--crease-d); }
+  34%       { clip-path: inset(0 -24px 33% -24px);         --unfold-a: 34%; --unfold-b: 67%;  --unfold-tint: var(--fold-shade); --unfold-line: var(--crease-d); }
+  67%, 100% { clip-path: inset(-24px -24px -40px -24px);   --unfold-a: 67%; --unfold-b: 100%; --unfold-tint: var(--fold-shade); --unfold-line: var(--crease-d); }
+}
+/* laid: a panel that is not there yet. Only ever used for its delay (`laid 1ms <delay> backwards`): the panel is
+   clipped away until its turn, then it is simply there, a single cut. A clip, not visibility: it can take focus. */
+@keyframes laid { from, to { clip-path: inset(0 0 100% 0); } }
+/* turnpage: a flip-book page. Edge-on, half turned, flat. */
+@keyframes turnpage { 0% { scale: .08 1; } 50% { scale: .62 1; } 100% { scale: 1 1; } }
+/* pleat: a table column pleats in from its left edge. */
+@keyframes pleat { 0% { scale: .2 1; } 50% { scale: .62 1; } 100% { scale: 1 1; } }
+/* bagfold: a flat-packed bag stands up from the ground. */
+@keyframes bagfold { 0% { scale: 1 .12; } 34% { scale: 1 .6; } 67%, 100% { scale: 1 1; } }
+
+/* ---------- 2. S3: cards unfold on arrival ---------- */
+/* replaces `place` on cards (higher specificity than html.js .rv.in). `backwards`: without it a staggered card
+   would show whole during its delay and then snap to a third. */
+html.ori-live .card.rv.in { animation: openfold var(--dur-unroll) steps(1, end) calc(var(--i, 0) * 40ms) backwards; }
+html.ori-live .label-card:not([hidden]) { animation: openfold var(--dur-unroll) steps(1, end); }
+
+/* ---------- 3. S3: the answer hangs from its question as a flap ---------- */
+/* the hinge: a hairline pair where the flap meets the question, the flap falling away from it into a little
+   shade, and air before the words start. Always on. */
+.qa__a {
+  padding-top: 12px;
+  background-image: var(--crease-pair-h), linear-gradient(to bottom, var(--fold-shade), #0000);
+  background-size: 100% 2px, 100% 9px; background-position: left top, left 2px; background-repeat: no-repeat;
+}
+/* The answer opens the way a drawer does: the layout makes room at once and the flap comes down in the three
+   clips of `openfold` (a third in the frame of the press, two thirds at 60 ms, flat at 120 ms), its newest third
+   in shade while it is held. It does not fade (paper is there or it is not).
+   app.js also animates this box's height and opacity from script (four steps over 420 ms; with the hinge padding
+   above, the first two of them showed nothing, so an answer took 217 ms to start and 427 ms to open). Two
+   rhythms would fight, so under ori-live the two !important declarations take that animation's effect away:
+   the clips are the only geometry. Closing is a cut. */
+html.ori-live .qa[open] > .qa__a {
+  animation: openfold var(--dur-unroll) steps(1, end);
+  height: auto !important; opacity: 1 !important;
+  background-image: var(--crease-pair-h), linear-gradient(to bottom, var(--fold-shade), #0000),
+    linear-gradient(to bottom, #0000 var(--unfold-a, 0%), var(--unfold-tint, #0000) var(--unfold-a, 0%) var(--unfold-b, 0%), #0000 var(--unfold-b, 0%));
+  background-size: 100% 2px, 100% 9px, 100% 100%; background-position: left top, left 2px, left top;
+}
+
+/* ---------- 4. S3: drawers, the long source list, the large view ---------- */
+html.ori-live .drawer[open] > .drawer__body { animation: openfold var(--dur-unroll) steps(1, end); }
+/* sources 9 to 40 come down as three panels, three cuts 60 ms apart: 9 to 18 at once, 19 to 29, then the rest */
+html.ori-live .src:not(.is-collapsed) li:nth-child(n+19) { animation: laid 1ms steps(1, end) 60ms backwards; }
+html.ori-live .src:not(.is-collapsed) li:nth-child(n+30) { animation-delay: 120ms; }
+html.ori-live dialog.zoom[open] { animation: openfold var(--dur-unroll) steps(1, end); }
+
+/* ---------- 5. S3: the menu unfolds block by block ---------- */
+/* Three cuts, 60 ms apart: the top block is there in the frame of the press, the second block one frame later,
+   everything under it one frame after that (--b is the cut a block arrives with). The creases lie in the gaps
+   between the blocks (the sheet's gap is 28 px), so they fall between content and never through it. They belong
+   to the block above, so each one arrives with its block. */
+#menu > :nth-child(1) { --b: 0; }
+#menu > :nth-child(2) { --b: 1; }
+#menu > :nth-child(n+3) { --b: 2; }
+#menu > .menu__top, #menu > .menu__sec { position: relative; }
+#menu > .menu__top::after, #menu > .menu__sec::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -15px; height: 2px; pointer-events: none;
+  background-image: var(--crease-pair-h);
+}
+html.ori-live #menu:not([hidden]) > :nth-child(n+2) { animation: laid 1ms steps(1, end) calc(var(--b, 0) * 60ms) backwards; }
+
+/* ---------- 6. S3 / S5: the signpost tent ---------- */
+/* it waits folded to its top third and opens once, when the core's observer marks it .is-in. The newest third is
+   in shade for its held frame (an overlay, so the heading panel's own tone is shaded too). */
+.tent { position: relative; }
+html.ori-live .tent[data-unfold]:not(.is-in) { clip-path: inset(0 -24px 66% -24px); }
+html.ori-live .tent.is-in { animation: openfold var(--dur-unroll) steps(1, end); }
+html.ori-live .tent::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background-image: linear-gradient(to bottom, #0000 var(--unfold-a, 0%), var(--unfold-line, #0000) var(--unfold-a, 0%) calc(var(--unfold-a, 0%) + 1px), var(--unfold-tint, #0000) calc(var(--unfold-a, 0%) + 1px) var(--unfold-b, 0%), #0000 var(--unfold-b, 0%));
+}
+
+/* ---------- 7. G1: the diagram's notes ---------- */
+/* They used to wait folded shut and open half a second after the diagram had arrived, one after the other (up
+   to 1.3 s in all). The diagram already has its own entrance (`place`, then the leader lines draw), so that was
+   a second wait on top of the first: removed. The notes arrive with their diagram, flat. */
+
+/* ---------- 8. G2: the long label unrolls left to right ---------- */
+/* three held steps: a third at once, two thirds at 60 ms, flat at 120 ms. The print's white backing strip is
+   taped down already; the label waits as a roll at its left end (a pseudo-element the size of the picture, with
+   the roll drawn at its leading edge) and is rolled out across it. Both are transitions, so both exist only under ori-live; `.is-in` comes from the core's observer,
+   which sets it on everything at once when the page is still. */
+html.ori-live .glabel[data-unfold] .print__paper img { clip-path: inset(0 0 0 0); transition: clip-path var(--dur-fold) var(--step-fold); }
+html.ori-live .glabel[data-unfold]:not(.is-in) .print__paper img { clip-path: inset(0 100% 0 0); transition: none; }
+html.ori-live .glabel[data-unfold] .print__paper::after {
+  content: ""; position: absolute; inset: var(--mat, 7px); pointer-events: none;
+  background:
+    linear-gradient(to right, #CDBDC4 0, #EFE7EA 14%, #FFFFFF 38%, #F3ECEF 64%, #D6C7CE 92%, #B9A6AF 100%) left top / 30px 100% no-repeat,
+    linear-gradient(to right, rgba(74, 13, 46, .22), #0000) 30px 0 / 14px 100% no-repeat;
+  translate: 100% 0; visibility: hidden;
+  transition: translate var(--dur-fold) var(--step-fold), visibility 0s linear calc(var(--dur-fold) * 2 / 3);   /* the roll is gone on the frame the label lies flat */
+}
+html.ori-live .glabel[data-unfold]:not(.is-in) .print__paper::after { translate: 0 0; visibility: visible; transition: none; }
+
+/* ---------- 9. G3: the moment drawing turns like a page; the calendar keeps its creases ---------- */
+/* replaces `dropin` on the drawing: the new page comes round its left edge (its spine) */
+html.ori-live .moment__art.swap svg { transform-origin: 0 50%; animation: turnpage var(--dur-swap) steps(1, end); }
+/* the calendar arrives with its card (the card's own unfold is its entrance: a second one inside it, four more
+   steps after the card had opened, only made the card slow). Three creases stay (svg.creases, fragment unfold/2):
+   they sit in the gaps between the week rows, and every second row lies a touch in shade, as a sheet that was
+   folded up like a concertina does. */
+.cal__pic > .creases { position: absolute; left: 0; top: 0; width: 100%; max-width: 380px; height: auto; aspect-ratio: 296 / 170; overflow: visible; pointer-events: none; }
+.creases path { fill: none; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.creases__d path { stroke: var(--crease-d); }
+.creases__l path { stroke: var(--crease-l); }
+.creases__s { fill: #4A0D2E; fill-opacity: .035; }
+
+/* ---------- 10. G4: the newly shown column pleats in (below 768 px, where the table shows one at a time) ---------- */
+@media (max-width: 767px) {
+  html.ori-live .fmt[data-show="pill"] .f-pill, html.ori-live .fmt[data-show="powder"] .f-powder, html.ori-live .fmt[data-show="gummy"] .f-gummy {
+    transform-origin: 0 50%; animation: pleat var(--dur-swap) steps(1, end);
+  }
+}
+
+/* ---------- 11. G5: an added bag folds up from flat; the chosen ticket's stub turns over ---------- */
+/* replaces `bagdrop`. `scale` is applied outside the bag's own tilt, about its foot (style.css sets the origin),
+   so the bag rises straight up from the ground: flat, half up at 60 ms, standing at 120 ms. Bags added together
+   stand up together (the original drop had no stagger either). */
+html.ori-live .stack__bag.drop { animation: bagfold var(--dur-unroll) steps(1, end); }
+/* the stub (the 48 px left of the perforation) lies reverse side up on the chosen ticket: the tint, a crease pair
+   on the perforation and a little shade toward it. It keeps inside the ticket's ink outline and its two notches. */
+.opt input:checked + .opt__b::after {
+  content: ""; position: absolute; left: 2.5px; top: 2.5px; bottom: 2.5px; z-index: -1; width: 45.5px; border-radius: 5.5px 0 0 5.5px; pointer-events: none;
+  background-color: var(--tint);
+  background-image: var(--crease-pair-v), linear-gradient(to right, #0000 50%, rgba(74, 13, 46, .08));
+  background-size: 2px 100%, 100% 100%; background-position: right top, left top; background-repeat: no-repeat;
+  -webkit-mask: radial-gradient(circle 7px at 46.25px -2.5px, #0000 6.5px, #000 7px) top / 100% 51% no-repeat, radial-gradient(circle 7px at 46.25px calc(100% + 2.5px), #0000 6.5px, #000 7px) bottom / 100% 51% no-repeat;
+          mask: radial-gradient(circle 7px at 46.25px -2.5px, #0000 6.5px, #000 7px) top / 100% 51% no-repeat, radial-gradient(circle 7px at 46.25px calc(100% + 2.5px), #0000 6.5px, #000 7px) bottom / 100% 51% no-repeat;
+}

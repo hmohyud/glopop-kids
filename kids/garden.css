@@ -1,0 +1,109 @@
+/* ---- kids/garden.css ---- */
+/* Glo Pop Kids · the pop garden. The strawberry pop is the hero; every piece of paper on the page is there for it:
+   pops grow on the river bank like flowers, a crane carries one, a boat ferries three, the bag of ten sits on the
+   bank. Clean crumpled cream paper, a faceted teal paper river, bright origami. All of it is static decoration that
+   sits behind the words (z-index -1 inside each sheet), never on top of them. The art itself is generated
+   (scratchpad garden/gen-garden.mjs) into the sprite in index.html and kids/garden-paper.css. */
+
+/* ---------- 1. Paper: clean crumpled sheets, each tile offset so no two sheets match ---------- */
+.sheet::before { background-image: var(--gp-crumple, none); background-size: 960px 960px; }
+.sheet--pink { --sheet: #FFD9EB; }
+.sheet--sun { --sheet: #FFEFC4; }
+.sheet--sea { --sheet: #D6F1EE; }
+/* a stack of bright construction paper for kids: every sheet its own colour, white cards on top stay calm */
+#pop     { --sheet: #FFD3E9; }
+#inside  { --sheet: #FFF0BF; }
+#sugar   { --sheet: #FFC6E1; }
+#sticks  { --sheet: #FFE07A; }
+#ritual  { --sheet: #D3ECFB; }
+#formats { --sheet: #E9DCFF; }
+#sun     { --sheet: #C6EFE6; }
+#lineup  { --sheet: #FFE0C7; }
+#shop    { --sheet: #DDF4E3; }
+#faq     { --sheet: #FFD6EA; }
+#sources { --sheet: #FFF4E6; }
+#final   { --sheet: #CFEBFA; }
+main > .sheet:nth-of-type(2n)::before { background-position: 310px 140px; }
+main > .sheet:nth-of-type(3n)::before { background-position: 620px 400px; }
+.ftr::before { background-image: none; }
+
+/* the seam between two sheets: one clean straight hem showing the white reverse, a soft shadow under it */
+.hem { height: 14px; background-color: #FFFFFF; box-shadow: 0 -1px 0 rgba(74, 13, 46, .08), 0 -4px 6px rgba(74, 13, 46, .1); }
+.hem::after { background-color: #FFFFFF; background-image: linear-gradient(to bottom, rgba(74, 13, 46, .06), rgba(74, 13, 46, 0) 6px), linear-gradient(to top, #F0E6EA 0 3px, transparent 3px); }
+.hem__edge { display: none; }
+.hem:not(.hem--flap)::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 20px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(74, 13, 46, .1), rgba(74, 13, 46, .04) 7px, rgba(74, 13, 46, 0));
+}
+
+/* ---------- 2. Origami paper: four tones of one sheet, plus its white reverse ---------- */
+.pp-pink  { --o1: #FF5CAF; --o2: #FF1493; --o3: #E60A82; --o4: #C4046D; }
+.pp-sun   { --o1: #FFDD78; --o2: #FFC83D; --o3: #F6B022; --o4: #E09A12; }
+.pp-sea   { --o1: #41BCC8; --o2: #0E9CAD; --o3: #0B8696; --o4: #0B6E7A; }
+.pp-leaf  { --o1: #57C880; --o2: #1FA453; --o3: #198D47; --o4: #13743A; }
+.pp-white { --o1: #FFFFFF; --o2: #F4EAEE; --o3: #E3D4DB; --o4: #CDBAC4; }
+.ow1 { fill: #FFFFFF; stroke: #FFFFFF; }
+.ow2 { fill: #F4EBEE; stroke: #F4EBEE; }
+.ow3 { fill: #E6D9DE; stroke: #E6D9DE; }
+symbol[id^="og-"] :is(polygon, rect, circle) { stroke-width: .6px; stroke-linejoin: round; }
+.gsh { opacity: var(--gsh, 1); }
+.is-reflection { --gsh: 0; opacity: .3; }
+
+/* the river: four close teals, a white cut edge, a soft lift shadow, the folds as light lines */
+.gw1 { fill: #B9E8E7; stroke: #B9E8E7; } .gw2 { fill: #A4DEDF; stroke: #A4DEDF; }
+.gw3 { fill: #91D5D8; stroke: #91D5D8; } .gw4 { fill: #80CBD0; stroke: #80CBD0; }
+.gw1, .gw2, .gw3, .gw4 { stroke-width: .8px; stroke-linejoin: round; }
+.gd-rv-edge { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 18px; stroke-linejoin: miter; stroke-miterlimit: 6; }
+.gd-rv-shadow { fill: #4A0D2E; stroke: #4A0D2E; stroke-width: 18px; stroke-linejoin: miter; stroke-miterlimit: 6; opacity: .1; }
+.gd-rv-fold { fill: none; stroke: #FFFFFF; stroke-opacity: .6; stroke-width: 1.2px; stroke-linecap: round; }
+.gd-rv-rip { fill: #FFFFFF; opacity: .92; }
+
+/* ---------- 3. The decoration layer of a sheet: behind the words, above the paper ---------- */
+.gd { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.gd-scene { position: absolute; top: 0; left: 50%; margin-left: -720px; overflow: visible; }
+
+.gd-v { position: absolute; }
+/* the closing scene sits in the flow, under the last words: the river runs across the foot of the page */
+.gd-pond { position: relative; height: 450px; margin-top: clamp(8px, 1.5vw, 20px); pointer-events: none; }
+.gd-pond .gd-scene { top: 0; }
+
+/* the garden is still: app.js's falling paper offcuts at two seams are not part of it */
+.flutter { display: none !important; }
+/* the waitlist field and its buttons ship disabled until app.js is listening: they must not look live (this used
+   to hang off the grown-ups zone, which is gone) */
+.btn:disabled, .field:disabled { opacity: .5; cursor: default; }
+.btn:disabled { pointer-events: none; }
+
+/* ---------- 3b. Kid lines, now that there is no kid zone: the slip and the packets caption keep their two voices ---------- */
+.taste__cap .kidline, .fact-slip__t .kidline { display: block; font-size: 19px; font-weight: 620; font-stretch: 100%; line-height: 1.4; letter-spacing: 0; color: var(--ink); }
+.taste__cap .kidline b, .fact-slip__t .kidline b { font-weight: 800; }
+.taste__cap .cap__more { display: block; margin-top: 4px; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--ink-2); }
+.fact-slip__t[data-fact-i] { font-size: 15px; font-weight: 400; line-height: 1.5; letter-spacing: 0; color: var(--ink-2); }
+.fact-slip__t[data-fact-i] .kidline { margin-bottom: 6px; }
+.facts-list .kidline { display: none; }
+
+/* ---------- 4. The hero: the pop, planted in its garden by the river ---------- */
+.hero.gd-hero { --sheet: #CFEBFA; min-height: 900px; }
+.hero.gd-hero::before { inset: 0; }
+.gd--hero .gd-scene { top: auto; bottom: 0; }
+.gd-hero .hero__inner { margin-block: 0; padding-top: calc(var(--header-h) + 150px); padding-bottom: 260px; }
+@media (min-width: 1024px) {
+  .gd-hero .hero__inner > * { max-width: 640px; }
+  .gd-hero .h1 { font-size: clamp(3.25rem, 1.6rem + 3.9vw, 5.6rem); line-height: .98; margin-bottom: 26px; }
+}
+.gd-hero .hero__lead { font-size: clamp(1.25rem, 1rem + .7vw, 1.6rem); font-weight: 600; line-height: 1.35; }
+.gd-hero .hero__ctas { margin-top: 34px; gap: 16px; }
+.gd-hero .hero__ctas .i { width: 20px; height: 20px; }
+/* narrower than the 1440 garden: the words come first, then the garden cropped from its right, so the pop, its
+   wrapped twin and the bag stay in view. The corner pieces down the page step aside (the words fill the width
+   there); only the river under the first seam stays, above the words of "The pop". */
+@media (max-width: 1023px) {
+  .gd-v:not(.gd-v--tl) { display: none; }
+  #pop { padding-top: calc(var(--edge-h) + 210px); }   /* room for the river under the seam, above the words */
+  .hero.gd-hero { min-height: 0; }
+  .gd-hero .hero__inner { order: 1; margin: 0; padding-top: calc(var(--header-h) + 32px); padding-bottom: 0; }
+  .gd--hero { position: relative; inset: auto; order: 2; height: clamp(400px, 112vw, 660px); }
+  .gd--hero .gd-scene { top: 0; bottom: auto; left: 0; margin-left: 0; width: 100%; height: 100%; }
+}
+/* the hero's pop casts one soft shadow onto the paper (the scene's other pieces carry their own little ones) */
+.gd--hero .gd-scene { filter: drop-shadow(0 10px 14px rgba(74, 13, 46, .1)); }

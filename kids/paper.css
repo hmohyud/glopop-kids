@@ -1,0 +1,179 @@
+/* ---- kids/paper.css ---- */
+/* Fold-Along Bay: paper has two sides (build plan 4.6; spec S1, S2, S4, K9). Every seam between sheets is a hem:
+   the top strip of the next sheet folded toward you, reverse side up. Buttons and headline strips end in a tuck,
+   tabs lie reverse side up until they are picked, and kid sheets 1 to 4 carry one page corner that turns the page.
+   Linked after kids/mat.css, unlayered. Resting looks are unconditional; every transition and animation here is
+   written under html.ori-live. This sheet never sets animation or clip-path on a card, a button or a sheet. */
+
+/* ---------- 1. Hems: the seam between two sheets (S1) ---------- */
+/* One seam physics for the whole page: a straight crease (a hairline pair), the reverse of the sheet showing for
+   --hem-h, the free edge keeping the sheet's own torn profile (its edge symbol, flipped), a shadow under that edge
+   onto the sheet, and a small one above the crease onto the sheet before. The old torn edge stays in the DOM. */
+.sheet__edge { display: none; }
+.hem {
+  position: absolute; left: 0; right: 0; top: calc(var(--edge-h) - 2px); z-index: -1; height: var(--hem-h); pointer-events: none;
+  background-color: var(--rev-sheet);
+  box-shadow: 0 -1px 0 rgba(74, 13, 46, .1), 0 -3px 4px rgba(74, 13, 46, .16);
+}
+/* the strip itself is painted over the torn edge, so the soft shadow under that edge cannot creep up onto it */
+.hem::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background-color: var(--rev-sheet);
+  background-image: linear-gradient(to bottom, rgba(74, 13, 46, .1), rgba(74, 13, 46, 0) 11px);   /* the paper rounds over the fold */
+  box-shadow: inset 0 1px 0 var(--crease-d), inset 0 2px 0 var(--crease-l);
+}
+.hem__edge {
+  position: absolute; left: 0; top: calc(100% - 1px); width: 100%; height: var(--edge-h); transform: scaleY(-1);
+  color: var(--rev-sheet); fill: currentColor;
+  filter: drop-shadow(0 -1px 0 rgba(74, 13, 46, .16)) drop-shadow(0 -5px 4px rgba(74, 13, 46, .24));   /* the flip turns both downward */
+}
+
+/* the footer is the back of an envelope: its top edge is the flap, folded down. The wrapper casts the shadow,
+   ::before is the cut shape (a cut shape cannot cast its own), ::after the crease along the top */
+.ftr { padding-top: calc(var(--edge-h) + clamp(40px, 6vw, 90px) + 30px); }   /* the columns start clear of the flap's point */
+.hem.hem--flap {
+  height: clamp(40px, 6vw, 90px); background: none; box-shadow: none;
+  filter: drop-shadow(0 2px 0 rgba(20, 2, 12, .3)) drop-shadow(0 6px 5px rgba(20, 2, 12, .34));
+}
+.hem--flap::before {
+  content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background-color: var(--footer);          /* the footer stock, lightened by the white wash below (no color-mix needed) */
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, .07), rgba(255, 255, 255, .18));
+}
+.hem--flap::after {
+  inset: 0 0 auto; z-index: auto; height: 2px; background-color: transparent;
+  background-image: linear-gradient(to bottom, rgba(20, 2, 12, .5) 0 1px, rgba(255, 255, 255, .2) 1px 2px);
+  box-shadow: 0 -3px 4px rgba(74, 13, 46, .22);
+}
+
+/* cards: a 9 px hem in the card's reverse along the top, a dark hairline and a breath of shadow under it, and
+   12 px crease ticks in the side padding at one third and two thirds (never under the words). All of it is
+   background-image layers: cards are not positioned and several clip, so no pseudo-element is used. */
+.card:not(.waitlist), .pcard, .label-card {
+  background-image:
+    linear-gradient(to bottom, rgba(255, 255, 255, .5) 0 1px, #0000 1px var(--hem-card), rgba(74, 13, 46, .24) var(--hem-card) calc(var(--hem-card) + 1px), rgba(74, 13, 46, .08) calc(var(--hem-card) + 1px), rgba(74, 13, 46, 0) calc(var(--hem-card) + 5px)),
+    linear-gradient(var(--rev-card), var(--rev-card)),
+    var(--crease-pair-h), var(--crease-pair-h), var(--crease-pair-h), var(--crease-pair-h);
+  background-size: 100% calc(var(--hem-card) + 5px), 100% var(--hem-card), 12px 2px, 12px 2px, 12px 2px, 12px 2px;
+  background-position: 0 0, 0 0, 0 33.3%, 100% 33.3%, 0 66.7%, 100% 66.7%;
+  background-repeat: no-repeat;
+}
+.pcard { padding-top: calc(14px + var(--hem-card)); }      /* its tile starts 14 px down: room for the hem above it */
+/* the comparison table fills its card edge to edge: the hem gets its own strip, and there is no padding for ticks */
+.fmt.card { padding-top: calc(var(--hem-card) + 1px); background-size: 100% calc(var(--hem-card) + 5px), 100% var(--hem-card), 0 0, 0 0, 0 0, 0 0; }
+
+/* the header strip: once it has a background its lower edge is folded up, 6 px of the reverse and a hairline.
+   ::before stays its shadow, un-clipped */
+.hdr.is-scrolled::after {
+  top: calc(100% - 6px); height: 6px; clip-path: none; background-color: var(--rev-sheet); background-image: none;
+  box-shadow: inset 0 1px 0 rgba(74, 13, 46, .2), 0 -1px 2px rgba(74, 13, 46, .07);
+}
+.hdr.is-scrolled::before { top: 100%; height: 7px; clip-path: none; background: linear-gradient(to bottom, rgba(74, 13, 46, .2), rgba(74, 13, 46, 0)); }
+
+/* ---------- 2. Tucks: the end of a button or a headline strip, folded over (S2) ---------- */
+/* The last 14 px of a button is its end folded back over the face, reverse side up. ::after is the whole pill
+   again (same box, same hand-cut radii) with all but its end cut away, so the tuck follows the pill's outline
+   exactly and the host keeps its under-sheet shadow. Hover and focus lift it, a press flattens it: each is a
+   single cut in the frame of the pointer (a stepped transition here held a dead first frame under the finger). */
+.btn { position: relative; padding-inline-end: 36px; }
+.btn--lg { padding-inline-end: 40px; }
+.btn--sm { padding-inline-end: 28px; }
+.btn::after {
+  --tuck-w: 14px; --tuck-c: var(--rev-strip); --tuck-ln: rgba(74, 13, 46, .3);
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  clip-path: inset(0 0 0 calc(100% - var(--tuck-w) - 5px));
+  background-image:
+    linear-gradient(to right, var(--tuck-ln) 0 1px, rgba(255, 255, 255, .55) 1px 2px, #0000 2px),   /* the flap's free edge: a hairline pair */
+    linear-gradient(to right, rgba(74, 13, 46, 0) 30%, rgba(74, 13, 46, .14)),                      /* it turns away from the light as it rounds the fold */
+    linear-gradient(var(--tuck-c), var(--tuck-c)),                                                  /* the reverse of the paper */
+    linear-gradient(to left, rgba(43, 7, 24, .24), rgba(43, 7, 24, 0));                             /* its contact shadow on the face */
+  background-size: var(--tuck-w) 100%, var(--tuck-w) 100%, var(--tuck-w) 100%, 5px 100%;
+  background-position: 100% 0, 100% 0, 100% 0, calc(100% - var(--tuck-w)) 0;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(74, 13, 46, .14);
+}
+.btn--ghost::after { --tuck-c: var(--accent); --tuck-ln: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }   /* white paper, coloured reverse; the ink outline carries round */
+.btn--onDark::after { --tuck-c: rgba(255, 246, 238, .82); --tuck-ln: rgba(43, 7, 24, .4); box-shadow: none; }
+/* on the pink sheet the primary button is cut from white paper (kids/layout.css): its reverse is berry, in the
+   lighter tone, because the accent itself would vanish into the sheet behind it */
+.kid.sheet--pink .btn--primary::after { --tuck-c: var(--accent-soft); --tuck-ln: rgba(43, 7, 24, .5); box-shadow: inset 0 0 0 1px rgba(43, 7, 24, .22); }
+.btn:hover::after, .btn:focus-visible::after { --tuck-w: 16px; }
+.btn:active::after { --tuck-w: 4px; }
+/* the sticky bar's button is exempt from the tuck only (its position and its perforation line stay as they are) */
+.bar > .btn { padding-inline-end: 26px; }
+.bar > .btn.btn--sm { padding-inline-end: 18px; }
+.bar > .btn.btn--lg { padding-inline-end: 30px; }
+.bar > .btn::after { content: none; }
+/* a 360 px phone: the header's "Grown-ups" has no room to spare, so it keeps its measured width and has no tuck */
+@media (max-width: 379px) { .hdr__grown { padding-inline-end: 11px; } .hdr__grown::after { content: none; } }
+
+/* a headline strip's right end is folded back over itself: a parallelogram in the strip's reverse, a hair out of
+   true so it peeps over the strip's top edge. ::before is its contact shadow on the strip. The strip's words stop
+   .2em short of its end, so the fold sits .26em past that end and the flap lands on the bare paper, never on a
+   letter. Both are outside the strip's own polygon and inside .cut's snip reveal (which reaches 12% past the
+   strip), so the four snips uncover them with the rest. */
+.cut { position: relative; }
+.cut::before, .cut::after { content: ""; position: absolute; right: -.26em; top: -.055em; bottom: .04em; width: .42em; pointer-events: none; }
+.cut::after {
+  clip-path: polygon(24% 0, 100% 7%, 100% 100%, 3% 96%, 0 62%, 9% 30%);
+  background-color: var(--rev-strip);
+  background-image: linear-gradient(to left, rgba(74, 13, 46, .2), rgba(74, 13, 46, 0) 55%);   /* shaded where it rounds the fold */
+}
+.cut::before { translate: -3px 2px; clip-path: polygon(24% 0, 100% 7%, 100% 100%, 3% 96%, 0 62%, 9% 30%); background-color: rgba(43, 7, 24, .26); }
+.cut:has(.strip--paper)::after { background-color: var(--accent); }
+.sheet--pink .cut:has(.strip--paper)::after { background-color: var(--accent-soft); }   /* accent on the accent sheet would vanish: the lighter berry of the "sugar" stock's inside */
+
+/* ---------- 3. Two-sided tabs and markers (S4) ---------- */
+/* manila folder tabs: an unpicked tab lies reverse side up, in kraft, with a hairline at its base; the picked one
+   stands up white with its accent top edge (style.css:1457, untouched) */
+.ftab { background-color: var(--kraft); background-image: var(--grain, none); box-shadow: inset 0 -1px 0 rgba(74, 13, 46, .28), inset 0 -7px 6px -6px rgba(74, 13, 46, .3), inset 0 1px 0 rgba(255, 255, 255, .35); }
+.ftab:hover { background-color: #E6CDA6; background-image: var(--grain, none); box-shadow: inset 0 -1px 0 rgba(74, 13, 46, .28), inset 0 -7px 6px -6px rgba(74, 13, 46, .3), inset 0 1px 0 rgba(255, 255, 255, .35); }
+.ftab[aria-selected="true"] { background-color: var(--paper-white); background-image: none; box-shadow: inset 0 3px 0 var(--accent), 0 -4px 8px -6px rgba(74, 13, 46, .35); }
+/* the "you are here" scrap under a nav link or a shop tab is a strip folded at its middle: two facets */
+.stab[aria-checked="true"]::after, .nav a[aria-current="true"]::after { background-image: linear-gradient(90deg, var(--accent) 50%, var(--accent-ink) 50%); }
+/* the checked choice stays face up under the pointer (style.css:1517 washed it out on hover) */
+.seg input:checked + span { background-color: var(--accent); }
+/* a segmented choice turns over when it becomes the checked one: half turned in the frame of the press, flat 60 ms later */
+@keyframes fliptab { from { scale: 1 .08; } to { scale: 1 1; } }
+html.ori-live .seg input:checked + span { animation: fliptab var(--dur-swap) var(--step-swap); }
+
+/* ---------- 4. The page corner (K9): the one dog-ear on the page ---------- */
+/* A real button, 96 x 96, in the bottom-right corner of kid sheets 1 to 4. It sits --edge-h above the sheet's
+   bottom because that last strip lies under the next section's box and cannot be pressed; the ear is drawn down
+   through that strip so its point is the sheet's visible corner. --ear is the registered length kids/paper.js
+   steps on the clock (rest, then two held values to --ear-peek). It has no transition anywhere. */
+.pagecorner {
+  --ear: var(--ear-rest); --next: var(--tint);
+  position: absolute; right: 0; bottom: var(--edge-h); z-index: 4; width: 96px; height: 96px; padding: 0; border: 0; border-radius: 0;
+  background: none; color: var(--ink); cursor: pointer; font: inherit; text-align: right; -webkit-tap-highlight-color: transparent;
+}
+.pagecorner[data-next="#sugar"] { --next: var(--accent); }
+.pagecorner[data-next="#sticks"] { --next: var(--sun); }
+.pagecorner[data-next="#sun"] { --next: var(--sea-light); }
+.pagecorner[data-next="#final"] { --next: var(--tint); }
+.pagecorner:hover, .pagecorner:focus-visible { --ear: 48px; }   /* the first held value of the turn: the corner lifts under the pointer */
+.pagecorner:focus-visible { outline-offset: -3px; }
+/* the words, on a scrap of white paper so they read over the sea as well as over a coloured sheet */
+.pagecorner__t {
+  position: absolute; right: 8px; top: 0; max-width: 84px; padding: 6px 9px 7px; border-radius: 3px 2px 3px 2px;
+  background-color: var(--paper-white); box-shadow: 1px 3px 0 rgba(74, 13, 46, .3);
+  font-size: 15px; font-weight: 760; font-stretch: 108%; line-height: 1.12; letter-spacing: -.005em; rotate: -3deg;
+}
+.pagecorner:active .pagecorner__t { translate: 0 2px; box-shadow: 0 1px 0 rgba(74, 13, 46, .3); }
+/* the ear: a square of side --ear + --edge-h whose point is the sheet's corner. ::before is what the fold uncovers
+   (the next sheet's colour, in the flap's shade), ::after the flap (the sheet's white reverse, rounding into the
+   fold). The two bands of the box itself are the flap's contact shadow on the sheet. */
+.pagecorner__ear {
+  position: absolute; right: 0; bottom: calc(-1 * var(--edge-h)); width: calc(var(--ear) + var(--edge-h) + 8px); height: calc(var(--ear) + var(--edge-h) + 8px); pointer-events: none;
+  background-image: linear-gradient(to top, rgba(74, 13, 46, .26), rgba(74, 13, 46, 0)), linear-gradient(to left, rgba(74, 13, 46, .26), rgba(74, 13, 46, 0));
+  background-size: calc(100% - 8px) 8px, 8px calc(100% - 8px); background-position: 100% 0, 0 100%; background-repeat: no-repeat;
+}
+.pagecorner__ear::before, .pagecorner__ear::after { content: ""; position: absolute; inset: 8px 0 0 8px; }
+.pagecorner__ear::before {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%); background-color: var(--next);
+  background-image: linear-gradient(135deg, rgba(74, 13, 46, .36) 50%, rgba(74, 13, 46, 0) 80%);
+}
+.pagecorner__ear::after {
+  clip-path: polygon(0 0, 100% 0, 0 100%); background-color: var(--rev-sheet);
+  background-image: linear-gradient(135deg, rgba(74, 13, 46, 0) 24%, rgba(74, 13, 46, .15) calc(50% - 2px), rgba(255, 255, 255, .9) calc(50% - 1px));
+}
