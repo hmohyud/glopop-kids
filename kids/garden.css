@@ -46,7 +46,9 @@ main > .sheet:nth-of-type(3n)::before { background-position: 620px 400px; }
 .ow2 { fill: #F4EBEE; stroke: #F4EBEE; }
 .ow3 { fill: #E6D9DE; stroke: #E6D9DE; }
 symbol[id^="og-"] :is(polygon, rect, circle) { stroke-width: .6px; stroke-linejoin: round; }
-.gsh { opacity: var(--gsh, 1); }
+/* a ground shadow is soft paper shade, not part of the thing: it never takes the pointer (its faded rim used to
+   show a pointing hand over bare paper) */
+.gsh { opacity: var(--gsh, 1); pointer-events: none; }
 .is-reflection { --gsh: 0; opacity: .3; }
 
 /* the river: four close teals, a white cut edge, a soft lift shadow, the folds as light lines */

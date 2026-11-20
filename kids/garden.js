@@ -127,18 +127,20 @@
     if (toy) play(toy, false);
   });
 
-  // a pointing hand over a toy, even one under the words (mouse only, once a frame)
+  // a pointing hand over a toy, even one under the words (mouse only, once a frame). Checked again when the page
+  // scrolls under a still mouse, so the hand never stays on over bare paper; gone when the mouse leaves the window.
+  var setHand = function () {};
   if (finePointer.matches) {
-    var hx = 0, hy = 0, hraf = 0, over = false;
-    doc.addEventListener('pointermove', function (e) {
-      hx = e.clientX; hy = e.clientY;
+    var hx = -1, hy = -1, hraf = 0, over = false, inside = false;
+    setHand = function (on) { if (on !== over) { over = on; doc.body.style.cursor = on ? 'pointer' : ''; } };
+    var check = function () {
       if (hraf) return;
-      hraf = win.requestAnimationFrame(function () {
-        hraf = 0;
-        var t = live() ? toyAt(hx, hy) : null;
-        if (!!t !== over) { over = !!t; doc.body.style.cursor = over ? 'pointer' : ''; }
-      });
-    }, { passive: true });
+      hraf = win.requestAnimationFrame(function () { hraf = 0; setHand(!!(inside && live() && toyAt(hx, hy))); });
+    };
+    doc.addEventListener('pointermove', function (e) { hx = e.clientX; hy = e.clientY; inside = true; check(); }, { passive: true });
+    win.addEventListener('scroll', function () { if (inside) check(); }, { passive: true });
+    doc.addEventListener('mouseout', function (e) { if (!e.relatedTarget) { inside = false; setHand(false); } });
+    doc.addEventListener('papersun:motion', function () { if (!live()) setHand(false); });
   }
 
   /* ---------- the hero: pops lean toward the pointer; the two buttons wake the pop and the bag ---------- */
