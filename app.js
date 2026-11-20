@@ -29,12 +29,13 @@
   var PRODUCTS = [
     {
       // The pop (pack facts, Nov 2026): a strawberry lollipop by Glo Pop Kids. Sugar free; net wt. 15 g a pop;
-      // seven ingredients named on the pack: peptides, vitamins C, B6, B12 and B8 (biotin), hyaluronic acid and zinc.
+      // six ingredients named on the pack: vitamins C, B6, B12 and B8 (biotin), hyaluronic acid and zinc (no peptides:
+      // the owner, Nov 2026).
       // The printed pack still carries the older product name and lockup, so the page shows no pack photo: kids pack art is TBD.
       id: 'strawberry-pop', kind: 'lollipop', name: 'Strawberry Pop', full: 'Sugar-free strawberry lollipop', flavor: 'Strawberry',
       status: 'available', statusLabel: 'Available now', tabNote: 'available',
       candy: { kind: 'lollipop', color: '#FF1493' },
-      card: 'A sugar-free strawberry lollipop with vitamins and zinc. Seven ingredients named on the pack, 15&nbsp;g a pop, 10 per bag.',
+      card: 'A sugar-free strawberry lollipop with vitamins and zinc. Six ingredients named on the pack, 15&nbsp;g a pop, 10 per bag.',
       link: { href: '#shop', label: 'Shop' },
       copy: {}                                   // strawberry copy ships in the HTML (captured at start-up)
     },
@@ -72,7 +73,7 @@
         'final.line': 'Super Greens Gummies · Strawberry-watermelon · 2 gummies a serving · 30 servings a container · Price and launch ' + TBD,
         'bar.text': '<b>Super Greens Gummies</b><span>Strawberry-watermelon · coming soon</span>', 'bar.cta': 'Join the waitlist', 'bar.href': '#waitlist',
         notice: {
-          inside: 'Heads up: these seven ingredients are in Strawberry Pop, the lollipop. Super Greens Gummies have their own formula: five B vitamins, iron, iodine, sodium and potassium, plus a greens blend. <a class="tlink tlink--in" href="#gummy-facts">See their Supplement Facts</a>.',
+          inside: 'Heads up: these six ingredients are in Strawberry Pop, the lollipop. Super Greens Gummies have their own formula: five B vitamins, iron, iodine, sodium and potassium, plus a greens blend. <a class="tlink tlink--in" href="#gummy-facts">See their Supplement Facts</a>.',
           sugar: 'Heads up: this chapter is about Strawberry Pop, the lollipop. Super Greens Gummies aren\'t sugar free: their label lists 3&nbsp;g of added sugars in a 2-gummy serving.'
         },
         live: 'Now showing Super Greens Gummies: strawberry-watermelon, coming soon.'
@@ -104,7 +105,7 @@
         'wl.text': 'Name ' + TBD + ', flavor ' + TBD + ', date ' + TBD + '. Get notified and you\'ll hear the moment it\'s real.',
         'wl.cap': 'colors ' + TBD,
         notice: {
-          inside: 'Heads up: these seven ingredients are in Strawberry Pop. The next color\'s formula is ' + TBD + '.',
+          inside: 'Heads up: these six ingredients are in Strawberry Pop. The next color\'s formula is ' + TBD + '.',
           sugar: 'Heads up: this chapter is about Strawberry Pop. The next color\'s recipe is ' + TBD + '.'
         },
         live: 'Now showing the next color: still in development.'
@@ -118,7 +119,7 @@
   var byId = {};
   PRODUCTS.forEach(function (p) { byId[p.id] = p; });
 
-  var ACTIVE_NAMES = { peptides: 'Peptides', vitc: 'Vitamin C', b6: 'Vitamin B6', b12: 'Vitamin B12', biotin: 'Biotin (B8)', ha: 'Hyaluronic acid', zinc: 'Zinc' };
+  var ACTIVE_NAMES = { vitc: 'Vitamin C', b6: 'Vitamin B6', b12: 'Vitamin B12', biotin: 'Biotin (B8)', ha: 'Hyaluronic acid', zinc: 'Zinc' };
   var FUNCTIONS = [
     { id: 'immune', name: 'Immune system', a: ['vitc', 'b6', 'b12', 'zinc'], line: 'Vitamin C, vitamin B6, vitamin B12 and zinc contribute to the normal function of the immune system.' },
     { id: 'energy', name: 'Energy-yielding metabolism', a: ['vitc', 'b6', 'b12', 'biotin'], line: 'Vitamin C, vitamin B6, vitamin B12 and biotin contribute to normal energy-yielding metabolism.' },
@@ -127,7 +128,7 @@
     { id: 'nerve', name: 'Nervous system', a: ['b12'], line: 'Vitamin B12 contributes to the normal functioning of the nervous system.' },
     { id: 'oxid', name: 'Cell protection', a: ['vitc', 'zinc'], line: 'Vitamin C and zinc contribute to the protection of cells from oxidative stress.' },
     { id: 'protein', name: 'Protein metabolism', a: ['b6', 'zinc'], line: 'Vitamin B6 contributes to normal protein and glycogen metabolism, and zinc to normal protein synthesis.' },
-    { id: 'moist', name: 'No authorized wording', a: ['peptides', 'ha'], dashed: true, line: 'Peptides and hyaluronic acid have no authorized wording. The research is still debated, and why they are in a kids pop is TBD.' }
+    { id: 'moist', name: 'No authorized wording', a: ['ha'], dashed: true, line: 'Hyaluronic acid has no authorized wording. The research is still debated, and why it is in a kids pop is TBD.' }
   ];
   var MOMENTS = {
     coffee: 'One pop after breakfast.',

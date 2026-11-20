@@ -60,6 +60,8 @@
     }
   }
   var at = function (el, fx0, fy0) { var r = el.getBoundingClientRect(); return [r.left + r.width * fx0, r.top + r.height * fy0]; };
+  // the match game (kids/match.js) throws its confetti from the same layer
+  win.GloGarden = { confetti: confetti, layer: layer, live: function () { return live(); } };
 
   /* ---------- toys ---------- */
   var playing = typeof WeakMap === 'function' ? new WeakMap() : null;

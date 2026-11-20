@@ -1,0 +1,126 @@
+/* ---- kids/match.css ---- */
+/* Glo Pop Kids · Pop match: line up three of a kind on a paper tray, and every pop you match drops into the bag of
+   ten (kids/match.js). The pieces are the garden's own paper friends on cream paper cards; the tray is a sheet of
+   kraft. A tile's place on the board is its `transform`; everything it does on top of that (lift, shake, nudge, pop)
+   uses the separate translate / scale / rotate properties, so the two never fight. */
+
+#match { --sheet: #DCF5C8; }
+.pp-violet { --o1: #CDB2FF; --o2: #A97DF5; --o3: #8E5FE2; --o4: #7445C6; }
+.pp-coral  { --o1: #FFB48C; --o2: #FF8A57; --o3: #F26C3A; --o4: #D8552A; }
+
+/* the words and the bag on the left, the tray on the right; on a phone the tray comes right after the words */
+.match__wrap {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px); grid-template-areas: "head main" "side main";
+  gap: 18px clamp(32px, 5vw, 88px); align-items: start;
+}
+.match__wrap > .chead { grid-area: head; }
+.match { display: contents; }
+.match__main { grid-area: main; }
+
+/* the side: the bag that fills, the count, moves, hint and start over */
+.match__side { grid-area: side; display: grid; grid-template-columns: minmax(120px, 190px) 1fr; grid-template-rows: auto auto 1fr; align-items: center; column-gap: 22px; row-gap: 6px; }
+.match__bag { grid-row: 1 / span 3; width: 100%; }
+.match__bag svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mb-slot { opacity: 0; transform: translateY(46px); transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), opacity .2s ease; }
+.mb-slot.is-in { opacity: 1; transform: none; }
+.match__count { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.3; color: var(--ink, #2B0718); }
+.match__count b { font-size: 34px; font-weight: 800; color: #E60A82; font-variant-numeric: tabular-nums; }
+.match__moves { margin: 0; font-size: 15px; color: var(--ink-2, #5A3348); }
+.match__moves b { font-variant-numeric: tabular-nums; color: var(--ink, #2B0718); }
+.match__btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+/* the tray: kraft paper, a white cut edge, lifted off the sheet */
+.match__main { display: grid; gap: 12px; }
+.match__tray {
+  position: relative; padding: clamp(8px, 1.6vw, 14px); border-radius: 22px;
+  background-color: #F0DDBA; background-image: var(--gp-crumple, none); background-size: 480px 480px;
+  box-shadow: 0 0 0 4px #FFFFFF, 0 10px 0 -2px rgba(74, 13, 46, .1), 0 14px 28px rgba(74, 13, 46, .14);
+}
+.match__board {
+  position: relative; width: 100%; aspect-ratio: 1; touch-action: manipulation; --gsh: 0;
+  clip-path: inset(-14px);                 /* new pieces fall in from above the tray, unseen until they arrive */
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.match__board.is-on { touch-action: none; }      /* while playing, a swipe on the tray is a swap, not a scroll */
+
+/* a piece: a paper card on the tray, the drawing on the card */
+.mt {
+  position: absolute; left: 0; top: 0; width: calc(100% / 7); height: calc(100% / 7); padding: 0; margin: 0;
+  border: 0; background: none; cursor: pointer; color: inherit;
+  transform: translate(calc(var(--c, 0) * 100%), calc(var(--r, 0) * 100%));
+  transition: transform var(--mt-d, 180ms) var(--mt-e, cubic-bezier(.3, .7, .4, 1)), scale .16s ease, translate .16s ease;
+}
+.mt::before {
+  content: ""; position: absolute; inset: 5%; border-radius: 22%;
+  background: #FFFCF6; box-shadow: 0 2px 0 rgba(74, 13, 46, .14), 0 3px 7px rgba(74, 13, 46, .08);
+  transition: box-shadow .16s ease;
+}
+.mt svg { position: relative; display: block; width: 100%; height: 100%; padding: 13%; pointer-events: none; overflow: visible; }
+/* the pieces that count: pops sit on pink cards, so it's plain which ones go in the bag */
+.mt[data-k="0"]::before { background: #FFE2F1; box-shadow: inset 0 0 0 2px #FFB3D9, 0 2px 0 rgba(74, 13, 46, .14), 0 3px 7px rgba(74, 13, 46, .08); }
+
+/* the goal, right above the tray: ten pop dots that fill as pops go in the bag */
+.match__goal { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; }
+.match__goal-t { font-size: 17px; font-weight: 600; color: var(--ink, #2B0718); }
+.match__goal-t b { color: #E60A82; font-weight: 800; }
+.match__dots { display: flex; gap: 4px; }
+.match__dots i {
+  width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; box-shadow: inset 0 0 0 2px #F3B9D6;
+  transition: background-color .3s ease, box-shadow .3s ease, scale .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+.match__dots i.is-in { background: #FF1493; box-shadow: inset 0 0 0 2px #C4046D, inset 4px 4px 0 -1px rgba(255, 255, 255, .45); scale: 1.12; }
+.mt:focus { outline: none; }
+.mt:focus-visible { z-index: 4; }
+.mt:focus-visible::before { box-shadow: 0 0 0 3px #2B0718, 0 3px 7px rgba(74, 13, 46, .12); }
+.mt.is-sel { z-index: 3; scale: 1.1; translate: 0 -4%; }
+.mt.is-sel::before { box-shadow: 0 0 0 3px #FF1493, 0 8px 14px rgba(74, 13, 46, .2); }
+.mt.is-sel:focus-visible::before { box-shadow: 0 0 0 3px #FF1493, 0 0 0 6px #2B0718, 0 8px 14px rgba(74, 13, 46, .2); }
+
+/* a match: the card puffs up and folds away */
+.mt.is-pop { z-index: 2; pointer-events: none; animation: mt-pop .26s ease-in forwards; }
+@keyframes mt-pop { 0% { scale: 1; } 40% { scale: 1.2; rotate: 8deg; } 100% { scale: 0; rotate: -24deg; opacity: 0; } }
+/* no match there: the two cards shake their heads */
+.mt.is-no { animation: mt-no .32s ease; }
+@keyframes mt-no { 20% { translate: -7% 0; } 40% { translate: 7% 0; } 60% { translate: -4% 0; } 80% { translate: 3% 0; } }
+/* a hint: two cards lean toward each other, twice, with a sunny ring */
+.mt.is-hint { z-index: 2; animation: mt-hint .62s ease-in-out 2; }
+.mt.is-hint::before { box-shadow: 0 0 0 3px #FFC83D, 0 3px 7px rgba(74, 13, 46, .1); }
+@keyframes mt-hint { 50% { translate: calc(var(--hx, 0) * 14%) calc(var(--hy, 0) * 14%); } }
+
+/* still (Pause motion, reduced motion): everything happens at once, nothing shakes or nudges */
+.match__board.is-still .mt { transition-duration: 40ms; }
+.match__board.is-still .mt.is-pop { animation-duration: 60ms; }
+.match__board.is-still .mt.is-no, .match__board.is-still .mt.is-hint { animation: none; }
+.match__board.is-still .mt.is-hint::before { box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 6px #E09A12; }
+
+/* the cover: before the first game and after a full bag */
+.match__cover {
+  position: absolute; inset: 0; z-index: 6; display: grid; place-content: center; justify-items: center; gap: 10px;
+  padding: clamp(14px, 3vw, 24px); border-radius: inherit; text-align: center;
+}
+.match__cover[hidden] { display: none; }
+.match__cover { background: rgba(255, 249, 238, .93); }
+.match__cover-h { margin: 0; font-size: clamp(24px, 1.4rem + 1vw, 38px); font-weight: 800; line-height: 1.05; color: #E60A82; letter-spacing: -.01em; }
+.match__cover-t { margin: 0 0 6px; max-width: 30ch; font-size: 18px; font-weight: 600; line-height: 1.4; color: var(--ink, #2B0718); }
+.match__cover-t[hidden] { display: none; }
+/* how to play: three steps, each drawn with the real pieces */
+.match__how { list-style: none; margin: 4px 0 10px; padding: 0; display: grid; gap: clamp(8px, 1.6vw, 14px); text-align: left; counter-reset: how; }
+.match__how[hidden] { display: none; }
+.match__how li { display: grid; grid-template-columns: clamp(118px, 15vw, 150px) 1fr; align-items: center; gap: 14px; counter-increment: how; }
+.how__art { display: flex; align-items: center; gap: 4px; }
+.how__card { position: relative; display: block; flex: none; width: clamp(34px, 4.4vw, 44px); aspect-ratio: 1; border-radius: 22%; background: #FFFCF6; box-shadow: 0 2px 0 rgba(74, 13, 46, .14), 0 3px 6px rgba(74, 13, 46, .08); }
+.how__card--pop { background: #FFE2F1; box-shadow: inset 0 0 0 2px #FFB3D9, 0 2px 0 rgba(74, 13, 46, .14); }
+.how__card svg { display: block; width: 100%; height: 100%; padding: 12%; }
+.how__swap { flex: none; width: 26px; height: 16px; color: #C4046D; }
+.how__bag { flex: none; width: clamp(34px, 4.4vw, 44px); height: auto; overflow: visible; }
+.how__t { font-size: clamp(15px, .9rem + .3vw, 18px); font-weight: 600; line-height: 1.3; color: var(--ink, #2B0718); }
+.how__t::before { content: counter(how) ". "; color: #E60A82; font-weight: 800; }
+.how__t b { font-weight: 800; }
+.match__cap { margin: 0; min-height: 1.5em; font-size: 16px; font-weight: 600; color: var(--ink, #2B0718); }
+
+.match__btns { align-self: start; }
+@media (max-width: 860px) {
+  .match__wrap { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "main" "side"; }
+  .match__side { grid-template-columns: 96px 1fr; column-gap: 16px; }
+  .match__count b { font-size: 28px; }
+}
