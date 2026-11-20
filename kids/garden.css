@@ -62,9 +62,11 @@ symbol[id^="og-"] :is(polygon, rect, circle) { stroke-width: .6px; stroke-linejo
 .gd { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 .gd-scene { position: absolute; top: 0; left: 50%; margin-left: -720px; overflow: visible; }
 
-.gd-v { position: absolute; }
+/* a piece is placed by its box, but draws past it: the rivers and hills run on to the edge of the screen at any
+   width, and the sheet (.gd, overflow hidden) trims them there, never the piece's own box */
+.gd-v { position: absolute; overflow: visible; }
 /* the closing scene sits in the flow, under the last words: the river runs across the foot of the page */
-.gd-pond { position: relative; height: 450px; margin-top: clamp(8px, 1.5vw, 20px); pointer-events: none; }
+.gd-pond { position: relative; height: 450px; margin-top: clamp(8px, 1.5vw, 20px); pointer-events: none; overflow-x: clip; }
 .gd-pond .gd-scene { top: 0; }
 
 /* the garden is still: app.js's falling paper offcuts at two seams are not part of it */
@@ -107,3 +109,58 @@ symbol[id^="og-"] :is(polygon, rect, circle) { stroke-width: .6px; stroke-linejo
 }
 /* the hero's pop casts one soft shadow onto the paper (the scene's other pieces carry their own little ones) */
 .gd--hero .gd-scene { filter: drop-shadow(0 10px 14px rgba(74, 13, 46, .1)); }
+
+/* ---------- 5. The garden is alive ----------
+   Every piece has its own small movement: pops sway on their stems, boats bob, cranes ride the air, clouds drift,
+   sparkles twinkle, light runs over the river. Each has its own pace (--t) and phase (--d) from the generator, so no
+   two move as one. Transforms and opacity only, on small pieces. It runs only while motion is on (html.ori-live: not
+   paused, not reduced motion) and the sheet is near the screen (.is-live); content-visibility skips the rest. */
+.mv { transform-box: fill-box; transform-origin: 50% 100%; }
+.mv-drift, .mv-twinkle, .mv-flit, .mv-flap { transform-origin: 50% 50%; }
+html.ori-live .is-live .mv { animation: var(--mv, none) var(--t, 3s) ease-in-out var(--d, 0s) infinite alternate; }
+.mv-sway, .mv-pop { --mv: gd-sway; --a: 2.6deg; }
+.mv-bob { --mv: gd-bob; --a: 2.4deg; }
+.mv-drift { --mv: gd-drift; }
+.mv-fly { --mv: gd-fly; }
+.mv-flit { --mv: gd-flit; }
+.mv-flap { --mv: gd-flap; }
+.mv-twinkle { --mv: gd-twinkle; }
+.mv-frog { --mv: gd-frog; }
+.mv-soft { --a: 1.5deg; }
+.mv-slow { --a: 1.2deg; }
+.mv-pop { --a: .7deg; }
+@keyframes gd-sway { from { transform: rotate(calc(var(--a) * -1)); } to { transform: rotate(var(--a)); } }
+@keyframes gd-bob { from { transform: translate(0, -2.5%) rotate(calc(var(--a) * -1)); } to { transform: translate(0, 2.5%) rotate(var(--a)); } }
+@keyframes gd-drift { from { transform: translate(-7%, 0); } to { transform: translate(7%, 0); } }
+@keyframes gd-fly { from { transform: translate(-2%, -7%) rotate(-2.5deg); } to { transform: translate(2%, 7%) rotate(2deg); } }
+@keyframes gd-flit { 0% { transform: translate(0, 0) rotate(-4deg); } 50% { transform: translate(70%, -90%) rotate(10deg); } 100% { transform: translate(-40%, -40%) rotate(-8deg); } }
+@keyframes gd-flap { from { transform: scaleX(1); } to { transform: scaleX(.28); } }
+@keyframes gd-twinkle { from { transform: scale(.5) rotate(0deg); opacity: .45; } to { transform: scale(1.15) rotate(45deg); opacity: 1; } }
+@keyframes gd-frog { from { transform: scale(1, 1); } to { transform: scale(1.035, .96); } }
+
+/* light on the water: a few facets of every river brighten and fade, each on its own beat */
+.gd-rv-glint { fill: #FFFFFF; stroke: none; opacity: 0; }
+html.ori-live .is-live .gd-rv-glint { animation: gd-glint 4.6s ease-in-out infinite; }
+html.ori-live .is-live .gd-rv-glint:nth-child(3n+1) { animation-duration: 3.7s; }
+html.ori-live .is-live .gd-rv-glint:nth-child(3n+2) { animation-duration: 5.6s; }
+html.ori-live .is-live .gd-rv-glint:nth-child(4n+1) { animation-delay: -1.3s; }
+html.ori-live .is-live .gd-rv-glint:nth-child(4n+2) { animation-delay: -2.6s; }
+html.ori-live .is-live .gd-rv-glint:nth-child(4n+3) { animation-delay: -3.9s; }
+@keyframes gd-glint { 0%, 64%, 100% { opacity: 0; } 30% { opacity: .5; } }
+
+/* toys: a tap plays with a pop, the frog, a boat, a crane, a cloud or the bag (kids/garden.js). The pieces that
+   lean toward the pointer, and the ones that grow in when their sheet arrives, ease into place. */
+html.ori-live [data-toy] { pointer-events: auto; cursor: pointer; }
+.mv-sway, .mv-pop, .mv-bob, .mv-fly {
+  transition: scale .7s cubic-bezier(.34, 1.56, .64, 1) var(--gi, 0s), translate .9s cubic-bezier(.2, .7, .3, 1) var(--gi, 0s),
+    opacity .5s ease var(--gi, 0s), rotate 1s cubic-bezier(.2, .7, .3, 1);
+}
+html.ori-live .gd-wait .mv-sway { scale: 0; }
+html.ori-live .gd-wait .mv-bob { scale: .3; opacity: 0; }
+html.ori-live .gd-wait .mv-fly { translate: 60% 40%; opacity: 0; }
+/* confetti, sparkles and little pops that fly out of a tap: their own fixed layer, above the page, never in the way */
+.gd-fx { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; contain: strict; }
+.gd-fx > * { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+.gd-fx__bit { width: 15px; height: 12px; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.gd-fx__spark { width: 20px; height: 20px; background: #FFFFFF; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.gd-fx__pop { width: 26px; height: 61px; overflow: visible; }
