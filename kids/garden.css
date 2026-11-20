@@ -1,6 +1,6 @@
 /* ---- kids/garden.css ---- */
 /* Glo Pop Kids · the pop garden. The strawberry pop is the hero; every piece of paper on the page is there for it:
-   pops grow on the river bank like flowers, a crane carries one, a boat ferries three, the bag of ten sits on the
+   pops grow on the river bank like flowers, cranes fly over, a boat ferries three, the bag of ten sits on the
    bank. Clean crumpled cream paper, a faceted teal paper river, bright origami. All of it is static decoration that
    sits behind the words (z-index -1 inside each sheet), never on top of them. The art itself is generated
    (scratchpad garden/gen-garden.mjs) into the sprite in index.html and kids/garden-paper.css. */
